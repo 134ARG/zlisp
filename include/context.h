@@ -6,6 +6,7 @@
 #define ZLISP_CONTEXT_H
 
 #include "char_utils.h"
+#include "logger.h"
 #include "status.h"
 #include <string.h>
 #include <stdio.h>
@@ -22,10 +23,10 @@ file_context_new(const char* filename, const char* mode)
 {
 	FILE* file = fopen(filename, mode);
 	if (!file) {
-		printf("Can not open file: %s\n", filename);
+		LOG_ERROR("Can not open file: %s\n", filename);
 	}
 	return (struct file_context) {
-			.file = fopen(filename, mode),
+			.file = file,
 			.lineno = 1,
 			.index = 0,
 	};
