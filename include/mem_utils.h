@@ -9,10 +9,10 @@
 #define CLEANUP(CLEANUP_FUNC) __attribute__((__cleanup__(CLEANUP_FUNC)))
 
 #define TAKE_PTR(PTR)                                                  \
-	__extension__({                                                    \
-		__typeof__(PTR) PTR_ = (PTR);                                  \
-		(PTR)                = NULL;                                   \
-		PTR_;                                                          \
-	})
+    __extension__({                                                    \
+        __typeof__(PTR) PTR_ = (PTR);                                  \
+        (PTR)                = NULL;                                   \
+        PTR_;                                                          \
+    })
 
 #endif //ZLISP_MEM_UTILS_H

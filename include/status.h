@@ -6,10 +6,10 @@
 #define ZLISP_STATUS_H
 
 enum status {
-    OK,
-    ERR_NO_MEM,
-    ERR_END_OF_FILE = -1,
-    ERR_FILE_CURSOR,
+	OK,
+	ERR_NO_MEM,
+	ERR_END_OF_FILE = -1,
+	ERR_FILE_CURSOR,
 };
 
 #endif //ZLISP_STATUS_H
