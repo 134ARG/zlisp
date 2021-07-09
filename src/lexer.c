@@ -18,6 +18,13 @@ skip_blanks(struct file_context* ctx)
 	return ch;
 }
 
+/*
+ * read_segment returns in three cases:
+ * 1. EOF
+ * 2. non-symbol character
+ * 3. symbol string
+ */
+
 string
 read_segment(struct file_context* ctx)
 {
@@ -25,8 +32,10 @@ read_segment(struct file_context* ctx)
 
 	int ch = skip_blanks(ctx);
 	if (ch == EOF) return segment;
+
 	string_push(&segment, (char) ch);
 	if (!is_symbol(ch)) return segment;
+
 	ch = file_context_getchar(ctx);
 	while (is_symbol(ch)) {
 		if (ch == '\\') {

@@ -22,7 +22,7 @@ file_context_new(const char* filename, const char* mode)
 {
 	FILE* file = fopen(filename, mode);
 	if (!file) {
-		printf("Null pointer: %s\n", filename);
+		printf("Can not open file: %s\n", filename);
 	}
 	return (struct file_context) {
 			.file = fopen(filename, mode),
