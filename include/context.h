@@ -59,6 +59,7 @@ file_context_rollback(struct file_context* ctx, int offset)
 	if (!fseek(ctx->file, offset, SEEK_CUR)) {
 		return ERR_FILE_CURSOR;
 	}
+	return OK;
 }
 
 #endif //ZLISP_CONTEXT_H
