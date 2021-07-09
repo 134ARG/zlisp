@@ -11,7 +11,8 @@
 enum status
 test_lexer()
 {
-	struct file_context test_file = file_context_new("/home/xen134/zlisp/cmake-build-debug/test.file", "r");
+	struct file_context test_file = file_context_new(
+			"/home/xen134/zlisp/cmake-build-debug/test.file", "r");
 	if (!test_file.file) {
 		printf("Hello, World!\n");
 		return 0;
