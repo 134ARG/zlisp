@@ -5,4 +5,4 @@ set(CMAKE_C_STANDARD 11)
 
 add_executable(zlisp main.c include/string_utils.h include/status.h include/mem_utils.h src/lexer.c include/context.h include/char_utils.h include/lexer.h tests/unit_test.c include/unit_test.h include/logger.h include/check.h src/expression.c include/expression.h)
 
-include_directories(include)
+include_directories(include third_party)
