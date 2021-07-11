@@ -5,6 +5,7 @@
 #include "status.h"
 #include "context.h"
 #include "string_utils.h"
+#include "list.h"
 #include "lexer.h"
 #include <stdio.h>
 
@@ -23,5 +24,27 @@ test_lexer()
 		string_clean(&segment);
 		segment = read_segment(&test_file);
 	}
+	return OK;
+}
+
+void 
+test_list()
+{
+	list* list_a;
+	list* list_b;
+	list* list_c;
+
+	list_a = new_list();
+	list_b = new_list();
+	list_c = new_list();
+
+	list_push_symbol(list_a, 1);
+	list_push_symbol(list_a, 2);
+	list_push_list(list_b, list_a);
+
+	list_clean(list_a);
+	list_deep_clean(list_b);
+	list_destruct(list_c);
+	list_destruct(list_b);
 
 }

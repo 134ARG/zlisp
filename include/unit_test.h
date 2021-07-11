@@ -8,5 +8,6 @@
 #include "status.h"
 
 enum status test_lexer();
+void test_list();
 
 #endif //ZLISP_UNIT_TEST_H

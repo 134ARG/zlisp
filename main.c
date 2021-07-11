@@ -6,6 +6,7 @@ int
 main()
 {
 	test_lexer();
+	test_list();
 
 	return 0;
 }
