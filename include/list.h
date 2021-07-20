@@ -40,4 +40,6 @@ void list_clean(list*);
 void list_destruct(list*);
 void list_deep_clean(list*);
 
+struct element* nth(list* , size_t);
+
 #endif //ZLISP_EXPRESSION_H

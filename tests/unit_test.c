@@ -7,6 +7,7 @@
 #include "string_utils.h"
 #include "list.h"
 #include "lexer.h"
+#include "unit_test.h"
 #include <stdio.h>
 
 enum status
@@ -41,6 +42,10 @@ test_list()
 	list_push_symbol(list_a, 1);
 	list_push_symbol(list_a, 2);
 	list_push_list(list_b, list_a);
+
+	ASSERT(nth(list_a, 0)->value.symbol == 1);
+	ASSERT(nth(list_a, 1)->value.symbol == 2);
+	ASSERT(nth(list_b, 0)->value.list == list_a);
 
 	list_clean(list_a);
 	list_deep_clean(list_b);
