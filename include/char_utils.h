@@ -53,7 +53,7 @@ is_score(int ch)
 static int
 is_symbol(int ch)
 {
-	return isalpha(ch) || is_underscore(ch) || is_score(ch);
+	return isalpha(ch) || is_underscore(ch) || is_score(ch) || isalnum(ch);
 }
 
 static int

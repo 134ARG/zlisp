@@ -66,8 +66,9 @@ string_push(string* s, char ch)
 {
 	if (s->size == s->capacity) {
 		string_expand(s, s->capacity * 2 + 1);   // check ok
+		s->capacity = s->capacity * 2;
 	}
-	s->capacity = s->capacity * 2;
+	
 	s->data[s->size++] = ch;
 	string_add_tail(s);
 }
