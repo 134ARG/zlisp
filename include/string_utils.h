@@ -6,6 +6,7 @@
 #define ZLISP_STRING_UTILS_H
 
 #include "status.h"
+#include "check.h"
 #include <stdlib.h>
 #include <memory.h>
 
@@ -65,12 +66,14 @@ static inline enum status
 string_push(string* s, char ch)
 {
 	if (s->size == s->capacity) {
-		string_expand(s, s->capacity * 2 + 1);   // check ok
+		CHECK_OK(string_expand(s, s->capacity * 2 + 1));
 		s->capacity = s->capacity * 2;
 	}
 	
 	s->data[s->size++] = ch;
 	string_add_tail(s);
+
+	return OK;
 }
 
 static inline enum status
