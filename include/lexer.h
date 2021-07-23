@@ -8,6 +8,6 @@
 #include "context.h"
 #include "string_utils.h"
 
-enum status read_segment(struct file_context* ctx, string* segment);
+enum status next_segment(struct file_context* ctx, string* segment);
 
 #endif //ZLISP_LEXER_H

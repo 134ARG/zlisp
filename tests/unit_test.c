@@ -21,7 +21,7 @@ test_lexer()
 		return 0;
 	}
 	string segment = string_new();
-	while (read_segment(&test_file, &segment) == OK) {
+	while (next_segment(&test_file, &segment) == OK) {
 		fprintf(stderr, "%s | ", segment.data);
 	}
 	return OK;

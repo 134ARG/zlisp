@@ -27,7 +27,7 @@ skip_blanks(struct file_context* ctx)
  */
 
 enum status
-read_segment(struct file_context* ctx, string* segment)
+next_segment(struct file_context* ctx, string* segment)
 {
 	if (segment->size) {
 		string_clean(segment);
