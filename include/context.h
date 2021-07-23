@@ -53,7 +53,7 @@ file_context_getchar(struct file_context* ctx)
 	return next;
 }
 
-static int
+static enum status
 file_context_rollback(struct file_context* ctx, int offset)
 {
 	if (!fseek(ctx->file, offset, SEEK_CUR)) {
