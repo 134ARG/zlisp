@@ -9,11 +9,11 @@
 #include <stdio.h>
 
 static void logger(const char* file, int line, const char* fmt, ...)
-		__attribute__ ((format(printf, 3, 4)));
+    __attribute__((format(printf, 3, 4)));
 
 #define LOG_ERROR(fmt, ...) logger(__FILE__, __LINE__, fmt, ##__VA_ARGS__)
 
-static void 
+static void
 logger(const char* file, int line, const char* fmt, ...)
 {
 	va_list args;
@@ -25,4 +25,4 @@ logger(const char* file, int line, const char* fmt, ...)
 	va_end(args);
 }
 
-#endif //ZLISP_LOGGER_H
+#endif  // ZLISP_LOGGER_H

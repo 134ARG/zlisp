@@ -2,20 +2,19 @@
 // Created by fort64 on 7/9/2021.
 //
 
-#include "status.h"
-#include "context.h"
-#include "string_utils.h"
-#include "list.h"
-#include "lexer.h"
 #include "unit_test.h"
+#include "context.h"
+#include "lexer.h"
+#include "list.h"
+#include "status.h"
+#include "string_utils.h"
 #include <stdio.h>
 
 enum status
 test_lexer()
 {
-	struct file_context test_file = file_context_new(
-			"./test.ll", "r");
-			
+	struct file_context test_file = file_context_new("./test.ll", "r");
+
 	if (!test_file.file) {
 		printf("Hello, World!\n");
 		return 0;
@@ -27,7 +26,7 @@ test_lexer()
 	return OK;
 }
 
-void 
+void
 test_list()
 {
 	list* list_a;
@@ -50,5 +49,4 @@ test_list()
 	list_deep_clean(list_b);
 	list_destruct(list_c);
 	list_destruct(list_b);
-
 }

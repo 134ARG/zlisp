@@ -10,4 +10,4 @@
 
 enum status next_segment(struct file_context* ctx, string* segment);
 
-#endif //ZLISP_LEXER_H
+#endif  // ZLISP_LEXER_H

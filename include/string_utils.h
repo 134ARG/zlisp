@@ -5,25 +5,26 @@
 #ifndef ZLISP_STRING_UTILS_H
 #define ZLISP_STRING_UTILS_H
 
-#include "status.h"
 #include "check.h"
-#include <stdlib.h>
+#include "status.h"
 #include <memory.h>
+#include <stdlib.h>
 
 #define DEFAULT_CAPACITY 5
 
 typedef struct string {
 	size_t size;
 	size_t capacity;
-	char* data;
+	char*  data;
 } string;
 
 static inline string
 string_new()
 {
-	return (string) {
-			.size = 0, .capacity = DEFAULT_CAPACITY,
-			.data = calloc(DEFAULT_CAPACITY + 1, sizeof(char)),
+	return (string){
+	    .size     = 0,
+	    .capacity = DEFAULT_CAPACITY,
+	    .data     = calloc(DEFAULT_CAPACITY + 1, sizeof(char)),
 	};
 }
 
@@ -33,8 +34,9 @@ string_free(string* s)
 	if (s->data) {
 		free(s->data);
 	}
-	s->size = s->capacity = 0;
-	s->data = NULL;
+	s->size     = 0;
+	s->capacity = 0;
+	s->data     = NULL;
 }
 
 static inline enum status
@@ -71,7 +73,7 @@ string_push(string* s, char ch)
 		CHECK_OK(string_expand(s, s->capacity * 2 + 1));
 		s->capacity = s->capacity * 2;
 	}
-	
+
 	s->data[s->size++] = ch;
 	string_add_tail(s);
 
@@ -82,7 +84,7 @@ static inline enum status
 string_append_cstr(string* s, const char* cstr, size_t cstr_size)
 {
 	size_t new_size = s->size + cstr_size;
-	string_expand(s, new_size); // check ok
+	string_expand(s, new_size);  // check ok
 	memcpy(&s->data[s->size], cstr, cstr_size);
 	string_add_tail(s);
 	return OK;
@@ -94,5 +96,4 @@ string_append_str(string* s, const string tail)
 	return string_append_cstr(s, tail.data, tail.size);
 }
 
-
-#endif //ZLISP_STRING_UTILS_H
+#endif  // ZLISP_STRING_UTILS_H

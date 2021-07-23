@@ -68,5 +68,4 @@ is_blank(int ch)
 	return isblank(ch) || iscntrl(ch) || is_line_breaker(ch);
 }
 
-
-#endif //ZLISP_CHAR_UTILS_H
+#endif  // ZLISP_CHAR_UTILS_H

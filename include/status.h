@@ -13,4 +13,4 @@ enum status {
 	ERR_CDR_IS_SET,
 };
 
-#endif //ZLISP_STATUS_H
+#endif  // ZLISP_STATUS_H

@@ -8,12 +8,12 @@
 #include "char_utils.h"
 #include "logger.h"
 #include "status.h"
-#include <string.h>
-#include <stdio.h>
 #include <errno.h>
+#include <stdio.h>
+#include <string.h>
 
 struct file_context {
-	FILE* file;
+	FILE*  file;
 	size_t lineno;
 	size_t index;
 };
@@ -25,10 +25,10 @@ file_context_new(const char* filename, const char* mode)
 	if (!file) {
 		LOG_ERROR("Can not open file: %s\n", filename);
 	}
-	return (struct file_context) {
-			.file = file,
-			.lineno = 1,
-			.index = 0,
+	return (struct file_context){
+	    .file   = file,
+	    .lineno = 1,
+	    .index  = 0,
 	};
 }
 
@@ -37,7 +37,7 @@ file_context_free(struct file_context* ctx)
 {
 	fclose(ctx->file);
 	ctx->lineno = 0;
-	ctx->index = 0;
+	ctx->index  = 0;
 }
 
 static int
@@ -62,4 +62,4 @@ file_context_rollback(struct file_context* ctx, int offset)
 	return OK;
 }
 
-#endif //ZLISP_CONTEXT_H
+#endif  // ZLISP_CONTEXT_H

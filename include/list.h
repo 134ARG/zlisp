@@ -16,16 +16,16 @@ enum node_type {
 };
 
 typedef struct element* hashed_list;
-typedef hashed_list list;
+typedef hashed_list     list;
 
 struct element {
-	int64_t index;	/* key */
+	int64_t index; /* key */
 
 	unsigned is_cdr : 1;
 
 	enum node_type value_type;
 	union {
-		list* list;
+		list*   list;
 		int64_t symbol;
 	} value;
 
@@ -33,13 +33,16 @@ struct element {
 };
 
 struct element* new_element();
+
 list* new_list();
+
 enum status list_push_symbol(list*, int64_t);
 enum status list_push_list(list*, list*);
+
 void list_clean(list*);
 void list_destruct(list*);
 void list_deep_clean(list*);
 
-struct element* nth(list* , size_t);
+struct element* nth(list*, size_t);
 
-#endif //ZLISP_EXPRESSION_H
+#endif  // ZLISP_EXPRESSION_H
