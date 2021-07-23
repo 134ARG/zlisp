@@ -2,6 +2,7 @@
 // Created by zry on 2021/7/8.
 //
 
+#include "status.h"
 #include "string_utils.h"
 #include "context.h"
 #include "char_utils.h"
@@ -25,25 +26,27 @@ skip_blanks(struct file_context* ctx)
  * 3. symbol string
  */
 
-string
-read_segment(struct file_context* ctx)
+enum status
+read_segment(struct file_context* ctx, string* segment)
 {
-	string segment = string_new();
+	if (segment->size) {
+		string_clean(segment);
+	}
 
 	int ch = skip_blanks(ctx);
-	if (ch == EOF) return segment;
+	if (ch == EOF) return INFO_END_OF_FILE;
 
-	string_push(&segment, (char) ch);
-	if (!is_symbol(ch)) return segment;
+	string_push(segment, (char) ch);
+	if (!is_symbol(ch)) return OK;
 
 	ch = file_context_getchar(ctx);
 	while (is_symbol(ch)) {
 		if (ch == '\\') {
 			ch = file_context_getchar(ctx);
 		}
-		string_push(&segment, (char) ch);
+		string_push(segment, (char) ch);
 		ch = file_context_getchar(ctx);
 	}
-	file_context_rollback(ctx, -1);
-	return segment;
+	CHECK_OK(file_context_rollback(ctx, -1));
+	return OK;
 }

@@ -15,15 +15,14 @@ test_lexer()
 {
 	struct file_context test_file = file_context_new(
 			"./test.ll", "r");
+			
 	if (!test_file.file) {
 		printf("Hello, World!\n");
 		return 0;
 	}
-	string segment = read_segment(&test_file);
-	while (segment.size != 0) {
+	string segment = string_new();
+	while (read_segment(&test_file, &segment) == OK) {
 		fprintf(stderr, "%s | ", segment.data);
-		string_free(&segment);
-		segment = read_segment(&test_file);
 	}
 	return OK;
 }
