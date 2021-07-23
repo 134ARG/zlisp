@@ -32,7 +32,9 @@ next_segment(struct file_context* ctx, string* segment)
 		string_clean(segment);
 	}
 
-	int ch = skip_blanks(ctx);
+	int ch;
+
+	ch = skip_blanks(ctx);
 	if (ch == EOF) {
 		return INFO_END_OF_FILE;
 	}
@@ -42,15 +44,13 @@ next_segment(struct file_context* ctx, string* segment)
 		return OK;
 	}
 
-	ch = file_context_getchar(ctx);
-	while (is_symbol(ch)) {
+	while (is_symbol(ch = file_context_getchar(ctx))) {
 		if (ch == '\\') {
 			ch = file_context_getchar(ctx);
 		}
 		string_push(segment, (char)ch);
-		ch = file_context_getchar(ctx);
 	}
-	CHECK_OK(file_context_rollback(ctx, -1));
 
+	CHECK_OK(file_context_rollback(ctx, -1));
 	return OK;
 }
