@@ -30,7 +30,9 @@ string_new()
 static inline void
 string_free(string* s)
 {
-	free(s->data);
+	if (s->data) {
+		free(s->data);
+	}
 	s->size = s->capacity = 0;
 	s->data = NULL;
 }
