@@ -8,7 +8,7 @@
 enum status {
 	OK,
 	ERR_NO_MEM,
-	ERR_END_OF_FILE = -1,
+	INFO_END_OF_FILE = -1,
 	ERR_FILE_CURSOR,
 	ERR_CDR_IS_SET,
 };
