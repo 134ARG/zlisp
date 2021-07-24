@@ -6,7 +6,6 @@
 #define ZLISP_EXPRESSION_H
 
 #include "string_utils.h"
-#include "symbol.h"
 #include "uthash/uthash.h"
 #include <stdint.h>
 
@@ -18,6 +17,8 @@ enum node_type {
 typedef struct element* hashed_list;
 typedef hashed_list     list;
 
+#define EMPTY_LIST NULL
+
 struct element {
 	int64_t index; /* key */
 
@@ -25,7 +26,7 @@ struct element {
 
 	enum node_type value_type;
 	union {
-		list*   list;
+		list    list;
 		int64_t symbol;
 	} value;
 
@@ -34,15 +35,12 @@ struct element {
 
 struct element* new_element();
 
-list* new_list();
-
 enum status list_push_symbol(list*, int64_t);
-enum status list_push_list(list*, list*);
+enum status list_push_list(list*, list);
 
-void list_clean(list*);
-void list_destruct(list*);
+void clean_list(list*);
 void list_deep_clean(list*);
 
-struct element* nth(list*, size_t);
+struct element* nth(list, size_t);
 
 #endif  // ZLISP_EXPRESSION_H

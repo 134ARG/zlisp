@@ -5,14 +5,24 @@
 #ifndef ZLISP_MEM_UTILS_H
 #define ZLISP_MEM_UTILS_H
 
-#define CLEANUP_FREE          __attribute__((__cleanup__(freep)))
+#include <stdlib.h>
+
+static inline void
+free_pointer(void* ptr)
+{
+	void** p = ptr;
+	free(*p);
+	*p = NULL;
+}
+
+#define CLEANUP_FREE          __attribute__((__cleanup__(free_pointer)))
 #define CLEANUP(CLEANUP_FUNC) __attribute__((__cleanup__(CLEANUP_FUNC)))
 
-#define TAKE_PTR(PTR)                                                          \
+#define MOVE_OUT(INTERNAL_PTR)                                                 \
 	__extension__({                                                            \
-		__typeof__(PTR) PTR_ = (PTR);                                          \
-		(PTR)                = NULL;                                           \
-		PTR_;                                                                  \
+		__typeof__(INTERNAL_PTR) EXTERNAL_PTR = (INTERNAL_PTR);                \
+		(INTERNAL_PTR)                        = NULL;                          \
+		EXTERNAL_PTR;                                                          \
 	})
 
 #endif  // ZLISP_MEM_UTILS_H

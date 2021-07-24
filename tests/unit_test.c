@@ -6,6 +6,7 @@
 #include "context.h"
 #include "lexer.h"
 #include "list.h"
+#include "mem_utils.h"
 #include "status.h"
 #include "string_utils.h"
 #include <stdio.h>
@@ -19,7 +20,7 @@ test_lexer()
 		printf("Hello, World!\n");
 		return 0;
 	}
-	string segment = string_new();
+	string segment = make_string();
 	while (next_segment(&test_file, &segment) == OK) {
 		fprintf(stderr, "%s | ", segment.data);
 	}
@@ -29,24 +30,18 @@ test_lexer()
 void
 test_list()
 {
-	list* list_a;
-	list* list_b;
-	list* list_c;
+	CLEANUP(clean_list) list list_a = EMPTY_LIST;
+	CLEANUP(clean_list) list list_b = EMPTY_LIST;
+	CLEANUP(clean_list) list list_c = EMPTY_LIST;
 
-	list_a = new_list();
-	list_b = new_list();
-	list_c = new_list();
-
-	list_push_symbol(list_a, 1);
-	list_push_symbol(list_a, 2);
-	list_push_list(list_b, list_a);
+	list_push_symbol(&list_a, 1);
+	list_push_symbol(&list_a, 2);
+	list_push_list(&list_b, list_a);
 
 	ASSERT(nth(list_a, 0)->value.symbol == 1);
 	ASSERT(nth(list_a, 1)->value.symbol == 2);
 	ASSERT(nth(list_b, 0)->value.list == list_a);
 
-	list_clean(list_a);
-	list_deep_clean(list_b);
-	list_destruct(list_c);
-	list_destruct(list_b);
+	MOVE_OUT(list_a);
+	list_deep_clean(&list_b);
 }

@@ -28,9 +28,7 @@ skip_blanks(struct file_context* ctx)
 enum status
 next_segment(struct file_context* ctx, string* segment)
 {
-	if (segment->size) {
-		string_clean(segment);
-	}
+	clean_string(segment);
 
 	int ch;
 

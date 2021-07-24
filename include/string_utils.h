@@ -19,7 +19,7 @@ typedef struct string {
 } string;
 
 static inline string
-string_new()
+make_string()
 {
 	return (string){
 	    .size     = 0,
@@ -29,7 +29,7 @@ string_new()
 }
 
 static inline void
-string_free(string* s)
+string_free_data(string* s)
 {
 	if (s->data) {
 		free(s->data);
@@ -40,10 +40,10 @@ string_free(string* s)
 }
 
 static inline enum status
-string_clean(string* s)
+clean_string(string* s)
 {
-	string_free(s);
-	*s = string_new();
+	string_free_data(s);
+	*s = make_string();
 	return OK;
 }
 

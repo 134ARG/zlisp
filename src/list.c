@@ -20,13 +20,6 @@ new_element()
 	return p;
 }
 
-list*
-new_list()
-{
-	list* p = calloc(1, sizeof(list));
-	return p;
-}
-
 enum status
 list_push_symbol(list* list_ptr, int64_t symbol)
 {
@@ -50,7 +43,7 @@ list_push_symbol(list* list_ptr, int64_t symbol)
 }
 
 enum status
-list_push_list(list* list_ptr, list* tail)
+list_push_list(list* list_ptr, list tail)
 {
 	struct element* end = NULL;
 
@@ -77,16 +70,11 @@ list_push_list(list* list_ptr, list* tail)
 }
 
 void
-list_clean(list* list_ptr)
+clean_list(list* list_ptr)
 {
-	HASH_CLEAR(hh, *list_ptr);
-}
-
-void
-list_destruct(list* list_ptr)
-{
-	list_clean(list_ptr);
-	free(list_ptr);
+	if (*list_ptr) {
+		HASH_CLEAR(hh, *list_ptr);
+	}
 }
 
 void
@@ -97,24 +85,26 @@ list_deep_clean(list* list_ptr)
 	HASH_ITER (hh, *list_ptr, current, tmp) {
 		HASH_DEL(*list_ptr, current);
 		if (current->value_type == EXPR) {
-			list_destruct(current->value.list);
+			clean_list(&(current->value.list));
+			current->value.list = NULL;
 		}
 	}
+	*list_ptr = EMPTY_LIST;
 }
 
 struct element*
-nth(list* list_ptr, size_t index)
+nth(list lst, size_t index)
 {
-	if (!list_ptr) {
+	if (!lst) {
 		LOG_ERROR("nth: empty pointer\n");
 		return NULL;
 	}
-	if (index >= HASH_COUNT(*list_ptr)) {
+	if (index >= HASH_COUNT(lst)) {
 		LOG_ERROR("nth: index overbound\n");
 		return NULL;
 	}
 	struct element* result = NULL;
-	HASH_FIND_INT(*list_ptr, &index, result);
+	HASH_FIND_INT(lst, &index, result);
 
 	return result;
 }
