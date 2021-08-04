@@ -25,6 +25,7 @@ DerivePointerAlignment: false
 ForEachMacros:
   - HASH_ITER
   - STRING_ITER
+  - LIST_ITER
 IncludeBlocks: Merge
 IncludeCategories:
   - Regex: '.*'

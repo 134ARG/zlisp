@@ -19,6 +19,9 @@ typedef hashed_list     list;
 
 #define EMPTY_LIST NULL
 
+#define LIST_ITER(list_name, current, tmp)                                     \
+	HASH_ITER (hh, list_name, current, tmp)
+
 struct element {
 	int64_t index; /* key */
 
