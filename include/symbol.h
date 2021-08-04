@@ -4,6 +4,7 @@
 
 #include "list.h"
 #include "string_utils.h"
+#include <stdint.h>
 
 enum symbol_type {
 	UNDEFINED,
@@ -26,7 +27,10 @@ struct symbol {
 	list plist;
 	list bind_list;
 
-	void* value;
+	union {
+		int64_t _integer;
+		double _float;
+	} value;
 };
 
 #endif  // ZLISP_SYMBOL_H
