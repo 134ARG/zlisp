@@ -12,6 +12,11 @@
 
 #define DEFAULT_CAPACITY 5
 
+#define STRING_ITER(string_name, current_char)                                 \
+	for (char* current_char = (string_name).data;                                \
+	     current_char != (string_name).data + (string_name).size;                  \
+	     current_char += 1)
+
 typedef struct string {
 	size_t size;
 	size_t capacity;
