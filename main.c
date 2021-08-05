@@ -7,6 +7,7 @@ main()
 {
 	test_lexer();
 	test_list();
+	test_tables();
 
 	return 0;
 }

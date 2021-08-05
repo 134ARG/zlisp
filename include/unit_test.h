@@ -15,8 +15,12 @@
 		}                                                                      \
 	} while (0)
 
+#define ASSERT_OK(EXPR) ASSERT((EXPR) == OK);
+
 enum status test_lexer();
 
 void test_list();
+
+void test_tables();
 
 #endif  // ZLISP_UNIT_TEST_H

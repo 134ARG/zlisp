@@ -9,6 +9,8 @@
 #include "mem_utils.h"
 #include "status.h"
 #include "string_utils.h"
+#include "symbol.h"
+#include "tables.h"
 #include <stdio.h>
 
 enum status
@@ -44,4 +46,40 @@ test_list()
 
 	MOVE_OUT(list_a);
 	list_deep_clean(&list_b);
+}
+
+void
+test_tables()
+{
+	CLEANUP(clean_symbol_table) struct symbol_table table;
+
+	table.symbols_by_id = table.symbols_by_name = NULL;
+	table.size                                  = 0;
+
+	struct symbol new = (struct symbol){
+	    .name           = make_string_from_cstr("first-symbol"),
+	    .type           = VARIABLE,
+	    .value._integer = 10,
+	};
+
+	size_t id1 = symbol_table_add(&table, new);
+
+	new.value._integer = 11;
+	new.name           = make_string_from_cstr("second-symbol");
+
+	size_t id2 = symbol_table_add(&table, new);
+
+	ASSERT(id1 == 0);
+	ASSERT(id2 == 1);
+
+	struct symbol* get1;
+	struct symbol* get2;
+
+	ASSERT_OK(symbol_table_id_get(table, 0, &get1));
+	ASSERT_OK(symbol_table_name_get(table,
+	                                make_string_from_cstr("second-symbol"),
+	                                &get2));
+
+	ASSERT(strcmp(get1->name.data, "first-symbol") == 0);
+	ASSERT(strcmp(get2->name.data, "second-symbol") == 0);
 }
