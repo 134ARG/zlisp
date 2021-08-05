@@ -13,8 +13,8 @@
 #define DEFAULT_CAPACITY 5
 
 #define STRING_ITER(string_name, current_char)                                 \
-	for (char* current_char = (string_name).data;                                \
-	     current_char != (string_name).data + (string_name).size;                  \
+	for (char* current_char = (string_name).data;                              \
+	     current_char != (string_name).data + (string_name).size;              \
 	     current_char += 1)
 
 typedef struct string {
@@ -33,8 +33,18 @@ make_string()
 	};
 }
 
-static inline void
-string_free_data(string* s)
+static inline string
+make_string_from_cstr(const char* cstr)
+{
+	return (string){
+	    .size     = strlen(cstr),
+	    .capacity = strlen(cstr),
+	    .data     = strdup(cstr),
+	};
+}
+
+static inline enum status
+clean_string(string* s)
 {
 	if (s->data) {
 		free(s->data);
@@ -42,12 +52,29 @@ string_free_data(string* s)
 	s->size     = 0;
 	s->capacity = 0;
 	s->data     = NULL;
+
+	return OK;
 }
 
 static inline enum status
-clean_string(string* s)
+string_set_cstr(string* s, const char* new)
 {
-	string_free_data(s);
+	clean_string(s);
+	*s = make_string_from_cstr(new);
+	return OK;
+}
+
+static inline enum status
+string_set(string* s, string* new)
+{
+	CHECK_OK(string_set_cstr(s, new->data));
+	return OK;
+}
+
+static inline enum status
+string_reset(string* s)
+{
+	clean_string(s);
 	*s = make_string();
 	return OK;
 }
