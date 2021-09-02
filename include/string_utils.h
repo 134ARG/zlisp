@@ -18,10 +18,12 @@
 	     char_ptr - (string_name).data < (string_name).size;                   \
 	     ++char_ptr)
 
+// C11 6.5.8 p.5
 #define STRING_ITER_FROM(string_name, char_ptr, start)                         \
-	for (char* char_ptr = (string_name).data + start;                          \
-	     char_ptr - (string_name).data < (string_name).size;                   \
-	     ++char_ptr)
+	if ((start) < (string_name).size)                                          \
+		for (char* char_ptr = (string_name).data + (start);                    \
+		     char_ptr - (string_name).data < (string_name).size;               \
+		     ++char_ptr)
 
 typedef struct string {
 	size_t size;
