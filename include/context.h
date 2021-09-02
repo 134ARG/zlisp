@@ -19,7 +19,7 @@ struct file_context {
 };
 
 static struct file_context
-file_context_new(const char* filename, const char* mode)
+make_file_context(const char* filename, const char* mode)
 {
 	FILE* file = fopen(filename, mode);
 	if (!file) {
@@ -33,9 +33,11 @@ file_context_new(const char* filename, const char* mode)
 }
 
 static void
-file_context_free(struct file_context* ctx)
+clean_file_context(struct file_context* ctx)
 {
-	fclose(ctx->file);
+	if (ctx->file) {
+		fclose(ctx->file);
+	}
 	ctx->lineno = 0;
 	ctx->index  = 0;
 }

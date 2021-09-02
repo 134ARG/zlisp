@@ -6,6 +6,7 @@
 #include "context.h"
 #include "lexer.h"
 #include "list.h"
+#include "logger.h"
 #include "mem_utils.h"
 #include "status.h"
 #include "string_utils.h"
@@ -16,17 +17,35 @@
 enum status
 test_lexer()
 {
-	struct file_context test_file = file_context_new("./test.ll", "r");
+	struct file_context test_file = make_file_context("./test.ll", "r");
 
 	if (!test_file.file) {
 		printf("Hello, World!\n");
-		return 0;
+		return ERR_INVALID_DATA;
 	}
 	string segment = make_string();
 	while (next_segment(&test_file, &segment) == OK) {
 		fprintf(stderr, "%s | ", segment.data);
 	}
+	clean_file_context(&test_file);
 	return OK;
+}
+
+void
+test_next_token()
+{
+	struct file_context test_file = make_file_context("./test.ll", "r");
+	if (!test_file.file) {
+		LOG_ERROR("file reading failed\n");
+		return;
+	}
+	struct token t;
+	t.content = make_string();
+	while (next_token(&test_file, &t) == OK) {
+		fprintf(stderr, "%s : %d | ", t.content.data, t.type);
+	}
+	clean_file_context(&test_file);
+	return;
 }
 
 void

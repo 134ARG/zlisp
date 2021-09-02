@@ -23,4 +23,6 @@ void test_list();
 
 void test_tables();
 
+void test_next_token();
+
 #endif  // ZLISP_UNIT_TEST_H

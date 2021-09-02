@@ -8,6 +8,7 @@ main()
 	test_lexer();
 	test_list();
 	test_tables();
+	test_next_token();
 
 	return 0;
 }
