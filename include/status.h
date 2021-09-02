@@ -12,6 +12,7 @@ enum status {
 	INFO_OBJ_NOT_FOUND,
 	ERR_FILE_CURSOR,
 	ERR_CDR_IS_SET,
+	ERR_INVALID_DATA,
 };
 
 #endif  // ZLISP_STATUS_H
