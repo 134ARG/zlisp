@@ -6,12 +6,31 @@
 #define ZLISP_CHAR_UTILS_H
 
 #include <ctype.h>
+#include <stdio.h>
 #include <string.h>
 
 static int
 is_lparen(int ch)
 {
 	return ch == '(';
+}
+
+static int
+is_slash(int ch)
+{
+	return ch == '\\';
+}
+
+static int
+is_doublequote(int ch)
+{
+	return ch == '"';
+}
+
+static int
+is_dot(int ch)
+{
+	return ch == '.';
 }
 
 static int
@@ -53,7 +72,20 @@ is_score(int ch)
 static int
 is_symbol(int ch)
 {
-	return isalpha(ch) || is_underscore(ch) || is_score(ch) || isalnum(ch);
+	return isalpha(ch) || is_underscore(ch) || is_score(ch) || isalnum(ch) ||
+	       is_slash(ch);
+}
+
+static int
+is_exponent(int ch)
+{
+	return ch == 'e' || ch == 'E';
+}
+
+static int
+is_sign(int ch)
+{
+	return ch == '-' || ch == '+';
 }
 
 static int
@@ -66,6 +98,12 @@ static int
 is_blank(int ch)
 {
 	return isblank(ch) || iscntrl(ch) || is_line_breaker(ch);
+}
+
+static int
+is_blank_or_eof(int ch)
+{
+	return is_blank(ch) || ch == EOF;
 }
 
 #endif  // ZLISP_CHAR_UTILS_H
