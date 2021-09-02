@@ -6,10 +6,10 @@
 #include "string_utils.h"
 #include <stdint.h>
 
+// semantic part
 enum symbol_type {
 	UNDEFINED,
 	VARIABLE,
-	NUMBER,
 	DOTTED_PAIR,
 	BUILDIN_FUNCTION,
 	BUILDIN_SPECIAL_FORM,
