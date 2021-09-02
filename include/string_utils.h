@@ -9,13 +9,19 @@
 #include "status.h"
 #include <memory.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define DEFAULT_CAPACITY 5
 
-#define STRING_ITER(string_name, current_char)                                 \
-	for (char* current_char = (string_name).data;                              \
-	     current_char != (string_name).data + (string_name).size;              \
-	     current_char += 1)
+#define STRING_ITER(string_name, char_ptr)                                     \
+	for (char* char_ptr = (string_name).data;                                  \
+	     char_ptr - (string_name).data < (string_name).size;                   \
+	     ++char_ptr)
+
+#define STRING_ITER_FROM(string_name, char_ptr, start)                         \
+	for (char* char_ptr = (string_name).data + start;                          \
+	     char_ptr - (string_name).data < (string_name).size;                   \
+	     ++char_ptr)
 
 typedef struct string {
 	size_t size;
@@ -126,6 +132,18 @@ static inline enum status
 string_append_str(string* s, const string tail)
 {
 	return string_append_cstr(s, tail.data, tail.size);
+}
+
+static inline int
+string_compare(const string s1, const string s2)
+{
+	return strcmp(s1.data, s2.data);
+}
+
+static inline int
+string_compare_cstr(const string s1, const char* s2)
+{
+	return strcmp(s1.data, s2);
 }
 
 #endif  // ZLISP_STRING_UTILS_H
