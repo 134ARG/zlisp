@@ -17,10 +17,11 @@
 enum status
 test_lexer()
 {
+	fprintf(stderr, "start testing next_segment()\n");
 	struct file_context test_file = make_file_context("./test.ll", "r");
 
 	if (!test_file.file) {
-		printf("Hello, World!\n");
+		printf("file reading failed\n");
 		return ERR_INVALID_DATA;
 	}
 	string segment = make_string();
@@ -28,12 +29,14 @@ test_lexer()
 		fprintf(stderr, "%s | ", segment.data);
 	}
 	clean_file_context(&test_file);
+	fprintf(stderr, "\ntesting finished.\n\n");
 	return OK;
 }
 
 void
 test_next_token()
 {
+	fprintf(stderr, "start testing next_token()\n");
 	struct file_context test_file = make_file_context("./test.ll", "r");
 	if (!test_file.file) {
 		LOG_ERROR("file reading failed\n");
@@ -41,16 +44,18 @@ test_next_token()
 	}
 	struct token t;
 	t.content = make_string();
-	while (next_token(&test_file, &t) == OK) {
+	while (next_token(&test_file, &t) != INFO_END_OF_FILE) {
 		fprintf(stderr, "%s : %d | ", t.content.data, t.type);
 	}
 	clean_file_context(&test_file);
+	fprintf(stderr, "\ntesting finished.\n\n");
 	return;
 }
 
 void
 test_list()
 {
+	fprintf(stderr, "start testing list\n");
 	CLEANUP(clean_list) list list_a = EMPTY_LIST;
 	CLEANUP(clean_list) list list_b = EMPTY_LIST;
 	CLEANUP(clean_list) list list_c = EMPTY_LIST;
@@ -65,11 +70,13 @@ test_list()
 
 	MOVE_OUT(list_a);
 	list_deep_clean(&list_b);
+	fprintf(stderr, "testing finished.\n\n");
 }
 
 void
 test_tables()
 {
+	fprintf(stderr, "start testing tables.\n");
 	CLEANUP(clean_symbol_table) struct symbol_table table;
 
 	table.symbols_by_id = table.symbols_by_name = NULL;
@@ -101,4 +108,5 @@ test_tables()
 
 	ASSERT(strcmp(get1->name.data, "first-symbol") == 0);
 	ASSERT(strcmp(get2->name.data, "second-symbol") == 0);
+	fprintf(stderr, "testing finished.\n\n");
 }
