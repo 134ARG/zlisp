@@ -106,6 +106,7 @@ string_add_tail(string* s)
 	s->data[s->size] = '\0';
 }
 
+// TODO: UTF-8 support
 static inline enum status
 string_push(string* s, char ch)
 {
