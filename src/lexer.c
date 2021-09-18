@@ -41,46 +41,22 @@ is_number_token(const string segment)
 	}
 
 	STRING_ITER_FROM (segment, ch_ptr, start) {
-		if (isalnum(*ch_ptr) && state == 0) {
+		if (isdigit(*ch_ptr) && state == 0) {
 			state = 1;
-		} else if (isalnum(*ch_ptr) &&
+		} else if (isdigit(*ch_ptr) &&
 		           (state == 1 || state == 2 || state == 4)) {
 			state = state;
 		} else if (is_dot(*ch_ptr) && state == 1) {
 			state = 2;
 		} else if (is_exponent(*ch_ptr) && (state == 1 || state == 2)) {
 			state = 3;
-		} else if (isalnum(*ch_ptr) && state == 3) {
+		} else if (isdigit(*ch_ptr) && state == 3) {
 			state = 4;
 		} else {
 			return false;
 		}
 	}
 	return state == 1 || state == 2 || state == 4;
-}
-
-enum token_type
-select_token(const string segment)
-{
-	if (!string_compare_cstr(segment, "(")) {
-		return LPARAN;
-	} else if (!string_compare_cstr(segment, ")")) {
-		return RPARAN;
-	} else if (!string_compare_cstr(segment, ",")) {
-		return COMMA;
-	} else if (!string_compare_cstr(segment, ":")) {
-		return COLON;
-	} else if (!string_compare_cstr(segment, ";")) {
-		return SEMICOLON;
-	} else if (!string_compare_cstr(segment, "'")) {
-		return QUOTE;
-	} else if (!string_compare_cstr(segment, "`")) {
-		return BACKQUOTE;
-	} else if (!string_compare_cstr(segment, "\"")) {
-		return DOUBLEQUOTE;
-	} else {
-		return STRING;
-	}
 }
 
 /*
@@ -125,7 +101,8 @@ next_token(struct file_context* ctx, struct token* token)
 	token->type = 0;
 	string_reset(&token->content);
 
-	int in_string = false;
+	int abort_flag  = false;
+	int ignore_flag = false;
 
 	int ch = 0;
 
@@ -137,16 +114,23 @@ next_token(struct file_context* ctx, struct token* token)
 	string_push(&token->content, ch);
 
 	if (is_doublequote(ch)) {
-		in_string = true;
+		ignore_flag = true;
+	} else if (!is_symbol(ch)) {
+		return OK;
 	}
 
-	while (!is_blank_or_eof(ch = file_context_getchar(ctx)) || in_string) {
+	while ((!is_blank_or_eof(ch = file_context_getchar(ctx)) || ignore_flag) &&
+	       !abort_flag) {
 		if (ch == '\\') {
 			ch = file_context_getchar(ctx);
-		} else if (ch == is_doublequote(ch) && in_string) {
-			in_string = false;
 		}
+
 		string_push(&token->content, (char)ch);
+
+		if (is_doublequote(ch) && ignore_flag) {
+			ignore_flag = false;
+			abort_flag  = true;
+		}
 	}
 
 	if (ch != EOF) {
