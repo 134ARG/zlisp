@@ -70,12 +70,6 @@ is_score(int ch)
 }
 
 static int
-is_symbol(int ch)
-{
-	return isalnum(ch) || is_underscore(ch) || is_score(ch) || is_slash(ch);
-}
-
-static int
 is_exponent(int ch)
 {
 	return ch == 'e' || ch == 'E';
@@ -103,6 +97,13 @@ static int
 is_blank_or_eof(int ch)
 {
 	return is_blank(ch) || ch == EOF;
+}
+
+static int
+is_symbol(int ch)
+{
+	return isalnum(ch) || is_underscore(ch) || is_score(ch) || is_slash(ch) ||
+	       is_sign(ch);
 }
 
 #endif  // ZLISP_CHAR_UTILS_H
