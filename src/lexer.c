@@ -66,13 +66,14 @@ is_number_token(const string segment)
  * 3. symbol string
  */
 enum status
-next_segment(struct file_context* ctx, string* segment)
+next_unit(struct file_context* ctx, string* segment)
 {
 	string_reset(segment);
 
 	int ch = 0;
 
-	ch = skip_blanks(ctx);
+	// ch = skip_blanks(ctx);
+	ch = file_context_getchar(ctx);
 	if (ch == EOF) {
 		return INFO_END_OF_FILE;
 	}
@@ -96,10 +97,9 @@ next_segment(struct file_context* ctx, string* segment)
 }
 
 enum status
-next_token(struct file_context* ctx, struct token* token)
+next_segment(struct file_context* ctx, string* segment)
 {
-	token->type = 0;
-	string_reset(&token->content);
+	string_reset(segment);
 
 	int abort_flag  = false;
 	int ignore_flag = false;
@@ -111,7 +111,7 @@ next_token(struct file_context* ctx, struct token* token)
 		return INFO_END_OF_FILE;
 	}
 
-	string_push(&token->content, ch);
+	string_push(segment, ch);
 
 	if (is_doublequote(ch)) {
 		ignore_flag = true;
@@ -125,7 +125,7 @@ next_token(struct file_context* ctx, struct token* token)
 			ch = file_context_getchar(ctx);
 		}
 
-		string_push(&token->content, (char)ch);
+		string_push(segment, (char)ch);
 
 		if (is_doublequote(ch) && ignore_flag) {
 			ignore_flag = false;
@@ -137,11 +137,5 @@ next_token(struct file_context* ctx, struct token* token)
 		CHECK_OK(file_context_rollback(ctx, -1));
 	}
 
-	if (is_number_token(token->content)) {
-		token->type = NUMBER;
-	} else {
-		token->type = BAD_TOEKN;
-		return ERR_INVALID_DATA;
-	}
 	return OK;
 }

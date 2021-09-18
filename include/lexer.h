@@ -21,9 +21,10 @@ enum token_type {
 	DOUBLEQUOTE,  // "
 	BACKQUOTE,    // `
 
-	SYMBOL,  // symbol
-	STRING,  // "something like that"
-	NUMBER,  // 123.4 or 1234 or 123e3
+	SYMBOL,     // symbol
+	STRING,     // "something like that"
+	NUMBER,     // 123.4 or 1234 or 123e3
+	MACROCHAR,  // `, ', # or other characters used for macro
 };
 
 struct token {
@@ -31,7 +32,7 @@ struct token {
 	string          content;
 };
 
+enum status next_unit(struct file_context* ctx, string* segment);
 enum status next_segment(struct file_context* ctx, string* segment);
-enum status next_token(struct file_context* ctx, struct token* token);
 
 #endif  // ZLISP_LEXER_H

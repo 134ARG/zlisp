@@ -17,7 +17,7 @@
 
 #define ASSERT_OK(EXPR) ASSERT((EXPR) == OK);
 
-enum status test_lexer();
+void test_lexer();
 
 void test_list();
 

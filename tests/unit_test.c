@@ -14,38 +14,33 @@
 #include "tables.h"
 #include <stdio.h>
 
-enum status
+void
 test_lexer()
 {
-	fprintf(stderr, "start testing next_segment()\n");
+	// next_unit
+	fprintf(stderr, "start testing next_unit()\n");
 	struct file_context test_file = make_file_context("./test.ll", "r");
 
 	if (!test_file.file) {
 		printf("file reading failed\n");
-		return ERR_INVALID_DATA;
+		return;
 	}
 	string segment = make_string();
-	while (next_segment(&test_file, &segment) == OK) {
+	while (next_unit(&test_file, &segment) == OK) {
 		fprintf(stderr, "%s | ", segment.data);
 	}
 	clean_file_context(&test_file);
 	fprintf(stderr, "\ntesting finished.\n\n");
-	return OK;
-}
 
-void
-test_next_token()
-{
+	// next_token
 	fprintf(stderr, "start testing next_token()\n");
-	struct file_context test_file = make_file_context("./test.ll", "r");
+	test_file = make_file_context("./test.ll", "r");
 	if (!test_file.file) {
 		LOG_ERROR("file reading failed\n");
 		return;
 	}
-	struct token t;
-	t.content = make_string();
-	while (next_token(&test_file, &t) != INFO_END_OF_FILE) {
-		fprintf(stderr, "%s : %d | ", t.content.data, t.type);
+	while (next_segment(&test_file, &segment) != INFO_END_OF_FILE) {
+		fprintf(stderr, "%s | ", segment.data);
 	}
 	clean_file_context(&test_file);
 	fprintf(stderr, "\ntesting finished.\n\n");
