@@ -20,6 +20,8 @@ test_lexer()
 {
 	// next_unit
 	fprintf(stderr, "start testing next_unit()\n");
+
+	CLEANUP(clean_file_context)
 	struct file_context test_file = make_file_context("./test.ll", "r");
 
 	if (!test_file.file) {
@@ -43,7 +45,7 @@ test_lexer()
 	while (next_segment(&test_file, &segment) != INFO_END_OF_FILE) {
 		fprintf(stderr, "%s | ", segment.data);
 	}
-	clean_file_context(&test_file);
+
 	fprintf(stderr, "\ntesting finished.\n\n");
 	return;
 }
