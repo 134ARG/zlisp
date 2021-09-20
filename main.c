@@ -8,6 +8,7 @@ main()
 	test_lexer();
 	test_list();
 	test_tables();
+	test_queue();
 
 	return 0;
 }

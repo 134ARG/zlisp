@@ -18,11 +18,9 @@
 #define ASSERT_OK(EXPR) ASSERT((EXPR) == OK);
 
 void test_lexer();
-
 void test_list();
-
 void test_tables();
-
 void test_next_token();
+void test_queue();
 
 #endif  // ZLISP_UNIT_TEST_H

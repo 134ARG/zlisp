@@ -5,6 +5,7 @@
 #include "unit_test.h"
 #include "context.h"
 #include "lexer.h"
+#include "linear_queue.h"
 #include "list.h"
 #include "logger.h"
 #include "mem_utils.h"
@@ -103,5 +104,37 @@ test_tables()
 
 	ASSERT(strcmp(get1->name.data, "first-symbol") == 0);
 	ASSERT(strcmp(get2->name.data, "second-symbol") == 0);
+	fprintf(stderr, "testing finished.\n\n");
+}
+
+void
+test_queue()
+{
+	fprintf(stderr, "start testing queue.\n");
+
+	CLEANUP(clean_queue) struct queue q = make_queue();
+
+	void* element = NULL;
+
+	ASSERT_OK(queue_push(&q, (void*)1));
+	ASSERT_OK(queue_push(&q, (void*)2));
+	ASSERT(q.end == 2);
+	ASSERT_OK(queue_get(&q, &element));
+	ASSERT(element == (void*)1);
+	ASSERT_OK(queue_get(&q, &element));
+	ASSERT(element == (void*)2);
+	ASSERT(is_queue_empty(&q));
+	ASSERT(q.start == q.end);
+
+	for (int i = 0; i < 100; i++) {
+		ASSERT_OK(queue_push(&q, (void*)7));
+	}
+
+	for (int i = 0; i < 100; i++) {
+		ASSERT_OK(queue_get(&q, &element));
+	}
+
+	ASSERT(is_queue_empty(&q));
+
 	fprintf(stderr, "testing finished.\n\n");
 }
