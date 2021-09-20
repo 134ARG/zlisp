@@ -14,12 +14,8 @@ enum token_type {
 	LPARAN,  // (
 	RPARAN,  // )
 
-	COMMA,        // ,
-	COLON,        // :
-	SEMICOLON,    // ;
-	QUOTE,        // '
-	DOUBLEQUOTE,  // "
-	BACKQUOTE,    // `
+	COLON,      // :
+	SEMICOLON,  // ;
 
 	SYMBOL,     // symbol
 	STRING,     // "something like that"
@@ -31,6 +27,10 @@ struct token {
 	enum token_type type;
 	string          content;
 };
+
+struct token make_token();
+
+enum status clean_token(struct token* token);
 
 enum status next_unit(struct file_context* ctx, string* segment);
 enum status next_segment(struct file_context* ctx, string* segment);

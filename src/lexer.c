@@ -12,6 +12,23 @@
 #define false 0
 #define true 1
 
+struct token
+make_token()
+{
+	return (struct token){
+	    .type    = BAD_TOEKN,
+	    .content = make_string(),
+	};
+}
+
+enum status
+clean_token(struct token* token)
+{
+	CHECK_OK(clean_string(&token->content));
+	token->type = BAD_TOEKN;
+	return OK;
+}
+
 static int
 skip_blanks(struct file_context* ctx)
 {
