@@ -36,7 +36,7 @@ test_lexer()
 	fprintf(stderr, "\ntesting finished.\n\n");
 
 	// next_token
-	fprintf(stderr, "start testing next_token()\n");
+	fprintf(stderr, "start testing next_segment()\n");
 	test_file = make_file_context("./test.ll", "r");
 	if (!test_file.file) {
 		LOG_ERROR("file reading failed\n");
