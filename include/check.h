@@ -15,4 +15,12 @@
 		}                                                                      \
 	} while (0)
 
+#define CHECK(cond, err_code)                                                  \
+	do {                                                                       \
+		if (!(cond)) {                                                         \
+			LOG_ERROR("Operation Failed.");                                    \
+			return err_code;                                                   \
+		}                                                                      \
+	} while (0)
+
 #endif  // ZLISP_CHECK_H
