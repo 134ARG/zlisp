@@ -15,6 +15,8 @@
 #include "tables.h"
 #include <stdio.h>
 
+INITIALIZE_QUEUE(int_queue, int);
+
 void
 test_lexer()
 {
@@ -114,29 +116,29 @@ test_queue()
 {
 	fprintf(stderr, "start testing queue.\n");
 
-	CLEANUP(clean_queue) struct queue q = make_queue();
+	CLEANUP(clean_int_queue) struct int_queue q = make_int_queue();
 
-	void* element = NULL;
+	int element = 0;
 
-	ASSERT_OK(queue_push(&q, (void*)1));
-	ASSERT_OK(queue_push(&q, (void*)2));
+	ASSERT_OK(int_queue_push(&q, 1));
+	ASSERT_OK(int_queue_push(&q, 2));
 	ASSERT(q.end == 2);
-	ASSERT_OK(queue_get(&q, &element));
-	ASSERT(element == (void*)1);
-	ASSERT_OK(queue_get(&q, &element));
-	ASSERT(element == (void*)2);
-	ASSERT(is_queue_empty(&q));
+	ASSERT_OK(int_queue_get(&q, &element));
+	ASSERT(element == 1);
+	ASSERT_OK(int_queue_get(&q, &element));
+	ASSERT(element == 2);
+	ASSERT(is_int_queue_empty(&q));
 	ASSERT(q.start == q.end);
 
 	for (int i = 0; i < 100; i++) {
-		ASSERT_OK(queue_push(&q, (void*)7));
+		ASSERT_OK(int_queue_push(&q, 7));
 	}
 
 	for (int i = 0; i < 100; i++) {
-		ASSERT_OK(queue_get(&q, &element));
+		ASSERT_OK(int_queue_get(&q, &element));
 	}
 
-	ASSERT(is_queue_empty(&q));
+	ASSERT(is_int_queue_empty(&q));
 
 	fprintf(stderr, "testing finished.\n\n");
 }
