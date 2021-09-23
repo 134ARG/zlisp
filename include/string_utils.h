@@ -6,6 +6,7 @@
 #define ZLISP_STRING_UTILS_H
 
 #include "check.h"
+#include "logger.h"
 #include "status.h"
 #include <memory.h>
 #include <stdlib.h>
@@ -44,16 +45,25 @@ make_string()
 static inline string
 make_string_from_cstr(const char* cstr)
 {
-	return (string){
-	    .size     = strlen(cstr),
-	    .capacity = strlen(cstr),
-	    .data     = strdup(cstr),
-	};
+	if (cstr) {
+		return (string){
+		    .size     = strlen(cstr),
+		    .capacity = strlen(cstr),
+		    .data     = strdup(cstr),
+		};
+	} else {
+		LOG_ERROR("make_string_from_cstr: Null pointer.");
+		return make_string();
+	}
 }
 
 static inline enum status
 clean_string(string* s)
 {
+	if (!s) {
+		return ERR_NULL_PTR;
+	}
+
 	if (s->data) {
 		free(s->data);
 	}
@@ -67,6 +77,9 @@ clean_string(string* s)
 static inline enum status
 string_set_cstr(string* s, const char* new)
 {
+	if (!s || !new) {
+		return ERR_NULL_PTR;
+	}
 	clean_string(s);
 	*s = make_string_from_cstr(new);
 	return OK;
@@ -75,6 +88,9 @@ string_set_cstr(string* s, const char* new)
 static inline enum status
 string_set(string* s, string* new)
 {
+	if (!s || !new) {
+		return ERR_NULL_PTR;
+	}
 	CHECK_OK(string_set_cstr(s, new->data));
 	return OK;
 }
@@ -82,6 +98,10 @@ string_set(string* s, string* new)
 static inline enum status
 string_reset(string* s)
 {
+	if (!s) {
+		return ERR_NULL_PTR;
+	}
+
 	clean_string(s);
 	*s = make_string();
 	return OK;
@@ -90,6 +110,10 @@ string_reset(string* s)
 static inline enum status
 string_expand(string* s, size_t new_size)
 {
+	if (!s) {
+		return ERR_NULL_PTR;
+	}
+
 	if (new_size > s->capacity) {
 		char* new_data = reallocarray(s->data, new_size, sizeof(char));
 		if (!new_data) {
@@ -103,6 +127,10 @@ string_expand(string* s, size_t new_size)
 static inline void
 string_add_tail(string* s)
 {
+	if (!s) {
+		LOG_ERROR("string_util: add tail: null pointer.");
+		return;
+	}
 	s->data[s->size] = '\0';
 }
 
@@ -110,6 +138,10 @@ string_add_tail(string* s)
 static inline enum status
 string_push(string* s, char ch)
 {
+	if (!s) {
+		return ERR_NULL_PTR;
+	}
+
 	if (s->size == s->capacity) {
 		CHECK_OK(string_expand(s, s->capacity * 2 + 1));
 		s->capacity = s->capacity * 2;
@@ -122,8 +154,30 @@ string_push(string* s, char ch)
 }
 
 static inline enum status
+string_pop(string* s, char* ch)
+{
+	if (!s) {
+		return ERR_NULL_PTR;
+	}
+
+	if (s->size > 0) {
+		if (ch) {
+			*ch = s->data[s->size - 1];
+		}
+		s->data[s->size - 1] = '\0';
+		s->size--;
+		return OK;
+	}
+	return ERR_CONTAINER_EMPTY;
+}
+
+static inline enum status
 string_append_cstr(string* s, const char* cstr, size_t cstr_size)
 {
+	if (!s || !cstr) {
+		return ERR_NULL_PTR;
+	}
+
 	size_t new_size = s->size + cstr_size;
 	string_expand(s, new_size);  // check ok
 	memcpy(&s->data[s->size], cstr, cstr_size);

@@ -14,6 +14,7 @@ enum status {
 	ERR_CDR_IS_SET,
 	ERR_INVALID_DATA,
 	ERR_CONTAINER_EMPTY,
+	ERR_NULL_PTR,
 };
 
 #endif  // ZLISP_STATUS_H
