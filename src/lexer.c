@@ -148,7 +148,7 @@ switch_single_char_token(int ch)
 enum status
 read_segment(struct file_context* ctx,
              string*              segment,
-             int                  with_all_char,
+             int                  with_all,
              int                  with_escape,
              int (*read_predicate)(int),
              int (*terminate_predicate)(int))
@@ -160,7 +160,7 @@ read_segment(struct file_context* ctx,
 		read_predicate = is_symbol;
 	}
 
-	while ((read_predicate(ch = file_context_getchar(ctx)) || with_all_char) &&
+	while ((read_predicate(ch = file_context_getchar(ctx)) || with_all) &&
 	       !terminate_flag) {
 		if (terminate_predicate && terminate_predicate(ch)) {
 			terminate_flag = true;
@@ -190,8 +190,8 @@ next_token(struct file_context* ctx, struct token* token)
 	string* content = &token->content;
 	string_reset(content);
 
-	int abort_flag    = false;
-	int with_all_char = false;
+	int abort_flag = false;
+	int with_all   = false;
 
 	int ch = 0;
 
@@ -204,32 +204,26 @@ next_token(struct file_context* ctx, struct token* token)
 	string_push(content, ch);
 
 	if (is_doublequote(ch)) {
-		with_all_char = true;
-		CHECK_OK(read_segment(ctx,
-		                      content,
-		                      with_all_char,
-		                      true,
-		                      NULL,
-		                      is_doublequote));
+		with_all = true;
+		CHECK_OK(
+		    read_segment(ctx, content, with_all, true, NULL, is_doublequote));
 		token->type = STRING;
 	} else if (is_number_start(ch)) {
-		with_all_char = false;
-		CHECK_OK(
-		    read_segment(ctx, content, with_all_char, false, is_number, NULL));
+		with_all = false;
+		CHECK_OK(read_segment(ctx, content, with_all, false, is_number, NULL));
 		if (is_number_token(token->content)) {
 			token->type = NUMBER;
 		} else {
 			token->type = BAD_TOKEN;
 		}
 	} else if (is_symbol(ch)) {
-		with_all_char = false;
-		CHECK_OK(
-		    read_segment(ctx, content, with_all_char, true, is_symbol, NULL));
+		with_all = false;
+		CHECK_OK(read_segment(ctx, content, with_all, true, is_symbol, NULL));
 		token->type = SYMBOL;
 	} else if (is_blank(ch)) {
 		skip_blanks(ctx);
-		token->type = BLANK;
 		CHECK_OK(string_pop(&token->content, NULL));
+		token->type = BLANK;
 	} else {
 		token->type = switch_single_char_token(ch);
 	}
