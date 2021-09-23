@@ -21,6 +21,7 @@ logger(const char* file, int line, const char* fmt, ...)
 
 	fprintf(stderr, "%s: %d: ", file, line);
 	vfprintf(stderr, fmt, args);
+	fprintf(stderr, "\n");
 
 	va_end(args);
 }
