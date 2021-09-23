@@ -40,6 +40,7 @@ clean_file_context(struct file_context* ctx)
 	}
 	ctx->lineno = 0;
 	ctx->index  = 0;
+	ctx->file   = NULL;
 }
 
 static int
