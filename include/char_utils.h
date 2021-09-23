@@ -106,4 +106,16 @@ is_symbol(int ch)
 	       is_sign(ch);
 }
 
+static int
+is_number_start(int ch)
+{
+	return is_sign(ch) || isdigit(ch);
+}
+
+static int
+is_number(int ch)
+{
+	return is_sign(ch) || isdigit(ch) || is_exponent(ch) || is_dot(ch);
+}
+
 #endif  // ZLISP_CHAR_UTILS_H

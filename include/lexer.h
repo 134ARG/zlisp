@@ -6,10 +6,11 @@
 #define ZLISP_LEXER_H
 
 #include "context.h"
+#include "linear_queue.h"
 #include "string_utils.h"
 
 enum token_type {
-	BAD_TOEKN,  // mal-formatted segment
+	BAD_TOKEN,  // mal-formed segment
 
 	LPARAN,  // (
 	RPARAN,  // )
@@ -21,6 +22,7 @@ enum token_type {
 	STRING,     // "something like that"
 	NUMBER,     // 123.4 or 1234 or 123e3
 	MACROCHAR,  // `, ', # or other characters used for macro
+	BLANK,
 };
 
 struct token {
@@ -28,11 +30,14 @@ struct token {
 	string          content;
 };
 
+INITIALIZE_QUEUE(token_queue, struct token);
+
 struct token make_token();
 
 enum status clean_token(struct token* token);
 
 enum status next_unit(struct file_context* ctx, string* segment);
 enum status next_segment(struct file_context* ctx, string* segment);
+enum status next_token(struct file_context* ctx, struct token* token);
 
 #endif  // ZLISP_LEXER_H

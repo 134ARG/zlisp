@@ -37,17 +37,18 @@ test_lexer()
 	clean_file_context(&test_file);
 	fprintf(stderr, "\ntesting finished.\n\n");
 
-	// next_token
-	fprintf(stderr, "start testing next_segment()\n");
+	// next token
+	fprintf(stderr, "start testing next_token()\n");
 	test_file = make_file_context("./test.ll", "r");
 	if (!test_file.file) {
 		LOG_ERROR("file reading failed\n");
 		return;
 	}
-	while (next_segment(&test_file, &segment) != INFO_END_OF_FILE) {
-		fprintf(stderr, "%s | ", segment.data);
+	struct token token = make_token();
+	while (next_token(&test_file, &token) != INFO_END_OF_FILE) {
+		fprintf(stderr, "%s : %d | ", token.content.data, token.type);
 	}
-
+	clean_file_context(&test_file);
 	fprintf(stderr, "\ntesting finished.\n\n");
 	return;
 }
