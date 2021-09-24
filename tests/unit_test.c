@@ -46,7 +46,7 @@ test_lexer()
 	}
 	struct token token = make_token();
 	while (next_token(&test_file, &token) != INFO_END_OF_FILE) {
-		fprintf(stderr, "%s : %d | ", token.content.data, token.type);
+		fprintf(stderr, "%s - %d | ", token.content.data, token.type);
 	}
 	clean_file_context(&test_file);
 	fprintf(stderr, "\ntesting finished.\n\n");
