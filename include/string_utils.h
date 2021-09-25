@@ -143,8 +143,8 @@ string_push(string* s, char ch)
 	}
 
 	if (s->size == s->capacity) {
-		CHECK_OK(string_expand(s, s->capacity * 2 + 1));
-		s->capacity = s->capacity * 2;
+		CHECK_OK(string_expand(s, s->capacity + DEFAULT_CAPACITY));
+		s->capacity = s->capacity + DEFAULT_CAPACITY;
 	}
 
 	s->data[s->size++] = ch;
