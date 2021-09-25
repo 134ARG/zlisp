@@ -14,15 +14,15 @@ enum node_type {
 	EXPR,
 };
 
-typedef struct element* hashed_list;
-typedef hashed_list     list;
+typedef struct element_abandon* hashed_list;
+typedef hashed_list             list;
 
 #define EMPTY_LIST NULL
 
 #define LIST_ITER(list_name, current, tmp)                                     \
 	HASH_ITER (hh, list_name, current, tmp)
 
-struct element {
+struct element_abandon {
 	int64_t index; /* key */
 
 	unsigned is_cdr : 1;
@@ -36,7 +36,7 @@ struct element {
 	UT_hash_handle hh;
 };
 
-struct element* new_element();
+struct element_abandon* new_element();
 
 enum status list_push_symbol(list*, int64_t);
 enum status list_push_list(list*, list);
@@ -44,6 +44,6 @@ enum status list_push_list(list*, list);
 void clean_list(list*);
 void list_deep_clean(list*);
 
-struct element* nth(list, size_t);
+struct element_abandon* nth(list, size_t);
 
 #endif  // ZLISP_EXPRESSION_H

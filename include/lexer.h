@@ -22,7 +22,7 @@ enum token_type {
 	STRING,     // "something like that"
 	NUMBER,     // 123.4 or 1234 or 123e3
 	MACROCHAR,  // `, ', # or other characters used for macro
-	BLANK,
+	BLANK,      // all blanks catenate to one cell
 };
 
 struct token {

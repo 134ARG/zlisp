@@ -1,5 +1,5 @@
 
-#include "list.h"
+#include "list_abandon.h"
 #include "logger.h"
 #include "status.h"
 #include "symbol.h"
@@ -7,10 +7,10 @@
 #include <malloc.h>
 #include <stdint.h>
 
-struct element*
+struct element_abandon*
 new_element()
 {
-	struct element* p = malloc(sizeof(struct element));
+	struct element_abandon* p = malloc(sizeof(struct element_abandon));
 
 	p->index        = 0;
 	p->value_type   = ATOM;
@@ -23,7 +23,7 @@ new_element()
 enum status
 list_push_symbol(list* list_ptr, int64_t symbol)
 {
-	struct element* end = NULL;
+	struct element_abandon* end = NULL;
 
 	size_t index = 0;
 
@@ -34,7 +34,7 @@ list_push_symbol(list* list_ptr, int64_t symbol)
 		return ERR_CDR_IS_SET;
 	}
 
-	struct element* p = new_element();
+	struct element_abandon* p = new_element();
 	p->value_type     = ATOM;
 	p->value.symbol   = symbol;
 	p->index          = HASH_COUNT(*list_ptr);
@@ -45,7 +45,7 @@ list_push_symbol(list* list_ptr, int64_t symbol)
 enum status
 list_push_list(list* list_ptr, list tail)
 {
-	struct element* end = NULL;
+	struct element_abandon* end = NULL;
 
 	size_t index = 0;
 
@@ -59,7 +59,7 @@ list_push_list(list* list_ptr, list tail)
 		}
 	}
 
-	struct element* p = new_element();
+	struct element_abandon* p = new_element();
 
 	p->value_type = EXPR;
 	p->value.list = tail;
@@ -80,8 +80,8 @@ clean_list(list* list_ptr)
 void
 list_deep_clean(list* list_ptr)
 {
-	struct element* current;
-	struct element* tmp;
+	struct element_abandon* current;
+	struct element_abandon* tmp;
 	HASH_ITER (hh, *list_ptr, current, tmp) {
 		HASH_DEL(*list_ptr, current);
 		if (current->value_type == EXPR) {
@@ -92,7 +92,7 @@ list_deep_clean(list* list_ptr)
 	*list_ptr = EMPTY_LIST;
 }
 
-struct element*
+struct element_abandon*
 nth(list lst, size_t index)
 {
 	if (!lst) {
@@ -103,7 +103,7 @@ nth(list lst, size_t index)
 		LOG_ERROR("nth: index overbound\n");
 		return NULL;
 	}
-	struct element* result = NULL;
+	struct element_abandon* result = NULL;
 	HASH_FIND_INT(lst, &index, result);
 
 	return result;

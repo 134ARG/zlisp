@@ -6,7 +6,7 @@
 #include "context.h"
 #include "lexer.h"
 #include "linear_queue.h"
-#include "list.h"
+#include "list_abandon.h"
 #include "logger.h"
 #include "mem_utils.h"
 #include "status.h"

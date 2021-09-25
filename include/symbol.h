@@ -2,7 +2,7 @@
 #ifndef ZLISP_SYMBOL_H
 #define ZLISP_SYMBOL_H
 
-#include "list.h"
+#include "list_abandon.h"
 #include "string_utils.h"
 #include <stdint.h>
 
@@ -29,7 +29,7 @@ struct symbol {
 
 	union {
 		int64_t _integer;
-		double _float;
+		double  _float;
 	} value;
 };
 
