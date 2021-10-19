@@ -17,10 +17,11 @@ add_executable(
   include/unit_test.h
   include/logger.h
   include/check.h
-  src/list_abandon.c
-  include/list_abandon.h
+  # src/list_abandon.c
+  # include/list_abandon.h
   include/tables.h
   src/tables.c
-  include/linear_queue.h)
+  include/linear_queue.h
+  include/element.h)
 
 include_directories(include third_party)

@@ -6,7 +6,7 @@
 #include "context.h"
 #include "lexer.h"
 #include "linear_queue.h"
-#include "list_abandon.h"
+// #include "list_abandon.h"
 #include "logger.h"
 #include "mem_utils.h"
 #include "status.h"
@@ -53,26 +53,26 @@ test_lexer()
 	return;
 }
 
-void
-test_list()
-{
-	fprintf(stderr, "start testing list\n");
-	CLEANUP(clean_list) list list_a = EMPTY_LIST;
-	CLEANUP(clean_list) list list_b = EMPTY_LIST;
-	CLEANUP(clean_list) list list_c = EMPTY_LIST;
+// void
+// test_list()
+// {
+// 	fprintf(stderr, "start testing list\n");
+// 	CLEANUP(clean_list) list list_a = EMPTY_LIST;
+// 	CLEANUP(clean_list) list list_b = EMPTY_LIST;
+// 	CLEANUP(clean_list) list list_c = EMPTY_LIST;
 
-	list_push_symbol(&list_a, 1);
-	list_push_symbol(&list_a, 2);
-	list_push_list(&list_b, list_a);
+// 	list_push_symbol(&list_a, 1);
+// 	list_push_symbol(&list_a, 2);
+// 	list_push_list(&list_b, list_a);
 
-	ASSERT(nth(list_a, 0)->value.symbol == 1);
-	ASSERT(nth(list_a, 1)->value.symbol == 2);
-	ASSERT(nth(list_b, 0)->value.list == list_a);
+// 	ASSERT(nth(list_a, 0)->value.symbol == 1);
+// 	ASSERT(nth(list_a, 1)->value.symbol == 2);
+// 	ASSERT(nth(list_b, 0)->value.list == list_a);
 
-	MOVE_OUT(list_a);
-	list_deep_clean(&list_b);
-	fprintf(stderr, "testing finished.\n\n");
-}
+// 	MOVE_OUT(list_a);
+// 	list_deep_clean(&list_b);
+// 	fprintf(stderr, "testing finished.\n\n");
+// }
 
 void
 test_tables()
@@ -84,15 +84,15 @@ test_tables()
 	table.size                                  = 0;
 
 	struct symbol new = (struct symbol){
-	    .name           = make_string_from_cstr("first-symbol"),
-	    .type           = VARIABLE,
-	    .value._integer = 10,
+	    .name = make_string_from_cstr("first-symbol"),
+	    .type = VARIABLE,
+	    // .value._integer = 10,
 	};
 
 	size_t id1 = symbol_table_add(&table, new);
 
-	new.value._integer = 11;
-	new.name           = make_string_from_cstr("second-symbol");
+	// new.value._integer = 11;
+	new.name = make_string_from_cstr("second-symbol");
 
 	size_t id2 = symbol_table_add(&table, new);
 
