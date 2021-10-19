@@ -1,4 +1,7 @@
 #include "string_utils.h"
+#include "symbol.h"
+
+#define NIL_TYPE 0
 
 enum types {
 	STRLITERAL,
@@ -7,24 +10,13 @@ enum types {
 	SYMBOLTYPE,
 	READERCHAR,
 	LIST,
-	NIL,
 	CUSTOM,
 };
 
-
 struct typed_pointer {
-	enum types type;
+	long type;
 
-	union {
-		struct symbol* symbol;
-		double*        float_literal;
-		long*          int_literal;
-		char*          string_literal;
-		char*          reader_char;
-		struct list*   list;
-		int            nil;
-		void*          custom;
-	} value;
+	void* value;
 };
 
 typedef struct typed_pointer typed_pointer;
@@ -32,15 +24,47 @@ typedef struct typed_pointer typed_pointer;
 #define NULL_POINTER                                                           \
 	(struct typed_pointer)                                                     \
 	{                                                                          \
-		.type = NIL, .value.nil = 1                                            \
+		.type = NIL_TYPE, .value = NULL                                        \
 	}
+
+#define INITIALIZE_POINTER(name, T, id)                                        \
+	static enum status pointer_to_##name(typed_pointer p, T** s)               \
+	{                                                                          \
+		if (!(p.type ^ id)) {                                                  \
+			*s = (T*)p.value;                                                  \
+			return OK;                                                         \
+		} else {                                                               \
+			LOG_ERROR("to: Invalid type: expect %d, get %d",                   \
+			          SYMBOLTYPE,                                              \
+			          p.type);                                                 \
+			*s = NULL;                                                         \
+			return ERR_TYPE;                                                   \
+		}                                                                      \
+	}                                                                          \
+                                                                               \
+	static enum status pointer_set_##name(typed_pointer p, T* s)               \
+	{                                                                          \
+		if (!(p.type ^ id) || p.type == NIL_TYPE) {                            \
+			p.type  = id;                                                      \
+			p.value = s;                                                       \
+			return OK;                                                         \
+		} else {                                                               \
+			LOG_ERROR("set: Invalid type: expect %d, get %d",                  \
+			          SYMBOLTYPE,                                              \
+			          p.type);                                                 \
+			*s = NULL;                                                         \
+			return ERR_TYPE;                                                   \
+		}                                                                      \
+	}
+
+INITIALIZE_POINTER(symbol, struct symbol, SYMBOLTYPE)
 
 static struct typed_pointer*
 new_empty_pointer()
 {
 	struct typed_pointer* p = malloc(sizeof(struct typed_pointer));
-	p->type                 = NIL;
-	p->value.nil            = 1;
+	p->type                 = NIL_TYPE;
+	p->value                = NULL;
 	return p;
 }
 

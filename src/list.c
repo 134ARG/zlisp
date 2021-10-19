@@ -63,5 +63,5 @@ cdr(const struct list* lst, typed_pointer rest)
 enum status
 append(struct list* lst, struct list* tail)
 {
-	
+	 
 }

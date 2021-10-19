@@ -4,7 +4,6 @@
 
 #include "list.h"
 #include "string_utils.h"
-#include <stdint.h>
 
 // semantic part
 enum symbol_type {
