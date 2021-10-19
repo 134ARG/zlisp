@@ -102,8 +102,13 @@ string_reset(string* s)
 		return ERR_NULL_PTR;
 	}
 
-	clean_string(s);
-	*s = make_string();
+	if (s->capacity == 0) {
+		*s = make_string();
+	} else {
+		s->size    = 0;
+		s->data[0] = '\0';
+	}
+
 	return OK;
 }
 
