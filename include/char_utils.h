@@ -118,4 +118,10 @@ is_number(int ch)
 	return is_sign(ch) || isdigit(ch) || is_exponent(ch) || is_dot(ch);
 }
 
+static int
+any_but_eof_and_blank(int ch)
+{
+	return !is_blank_or_eof(ch);
+}
+
 #endif  // ZLISP_CHAR_UTILS_H
