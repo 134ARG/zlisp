@@ -1,3 +1,6 @@
+#ifndef ZLISP_TABLE_H
+#define ZLISP_TABLE_H
+
 #include "status.h"
 #include "symbol.h"
 #include "uthash/uthash.h"
@@ -29,3 +32,5 @@ enum status symbol_table_id_get(struct symbol_table table,
 size_t symbol_table_add(struct symbol_table* table, struct symbol new);
 
 void clean_symbol_table(struct symbol_table* table);
+
+#endif  // ZLISP_TABLE_H
