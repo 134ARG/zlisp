@@ -6,6 +6,8 @@
 #include "char_utils.h"
 #include "check.h"
 #include "context.h"
+#include "list.h"
+#include "logger.h"
 #include "status.h"
 #include "string_utils.h"
 #include <ctype.h>
@@ -218,7 +220,12 @@ next_token(struct file_context* ctx, struct token* token)
 		}
 	} else if (is_symbol(ch)) {
 		with_all = false;
-		CHECK_OK(read_segment(ctx, content, with_all, true, is_symbol, NULL));
+		CHECK_OK(read_segment(ctx,
+		                      content,
+		                      with_all,
+		                      true,
+		                      any_but_eof_and_blank,
+		                      NULL));
 		token->type = SYMBOL;
 	} else if (is_blank(ch)) {
 		skip_blanks(ctx);
@@ -228,5 +235,21 @@ next_token(struct file_context* ctx, struct token* token)
 		token->type = switch_single_char_token(ch);
 	}
 
+	return OK;
+}
+
+enum status
+read_sexpression(struct file_context* ctx, struct list* sexpr)
+{
+	struct token tok = make_token();
+	CHECK_OK(next_token(ctx, &tok));
+	if (tok.type != LPARAN) {
+		LOG_ERROR("Invalid s-exprssion");
+		return ERR_LEXER;
+	}
+	// TODO: implement
+	while (tok.type != RPARAN && next_token(ctx, &tok) == OK) {
+		break;
+	}
 	return OK;
 }
