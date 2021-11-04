@@ -4,6 +4,7 @@
 
 #include "list.h"
 #include "string_utils.h"
+#include "typed_pointer.h"
 
 // semantic part
 enum symbol_type {
@@ -20,11 +21,14 @@ enum symbol_type {
 
 struct symbol {
 	string name;
- 
+
 	enum symbol_type type;
 
-	struct list* plist;
-	struct list* bind_list;
+	struct list*   plist;
+	struct list*   bind_list;
+	typed_pointer* value;
 };
+
+INITIALIZE_POINTER(symbol, struct symbol, SYMBOLTYPE);
 
 #endif  // ZLISP_SYMBOL_H

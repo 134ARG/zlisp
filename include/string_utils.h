@@ -8,6 +8,7 @@
 #include "check.h"
 #include "logger.h"
 #include "status.h"
+#include "typed_pointer.h"
 #include <memory.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,6 +32,9 @@ typedef struct string {
 	size_t capacity;
 	char*  data;
 } string;
+
+INITIALIZE_POINTER(string, struct string, STRLITERAL);
+INITIALIZE_POINTER(macrochar, struct string, STRLITERAL);
 
 static inline string
 make_string()

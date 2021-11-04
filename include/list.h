@@ -1,3 +1,6 @@
+#ifndef ZLISP_LIST_H
+#define ZLISP_LIST_H
+
 #include "typed_pointer.h"
 #include "uthash/uthash.h"
 
@@ -17,6 +20,8 @@ struct list {
 	int flag_indexed;
 };
 
+INITIALIZE_POINTER(list, struct list, LIST);
+
 struct list  make_list();
 struct list* new_list();
 
@@ -29,3 +34,5 @@ enum status append(struct list* lst, struct list* tail);
 enum status cons(struct typed_pointer* car,
                  struct typed_pointer* cdr,
                  struct list*          lst);
+
+#endif  // ZLISP_LIST_H
