@@ -16,6 +16,7 @@ enum status {
 	ERR_CONTAINER_EMPTY,
 	ERR_NULL_PTR,
 	ERR_TYPE,
+	ERR_LEXER,
 };
 
 #endif  // ZLISP_STATUS_H
