@@ -141,7 +141,7 @@ switch_single_char_token(int ch)
 	} else if (is_semi(ch)) {
 		return SEMICOLON;
 	} else if (!is_blank_or_eof(ch)) {
-		return MACROCHAR;
+		return MACROCHAR_TOKEN;
 	} else {
 		return BAD_TOKEN;
 	}
@@ -209,12 +209,12 @@ next_token(struct file_context* ctx, struct token* token)
 		with_all = true;
 		CHECK_OK(
 		    read_segment(ctx, content, with_all, true, NULL, is_doublequote));
-		token->type = STRING;
+		token->type = STRING_LIT_TOKEN;
 	} else if (is_number_start(ch)) {
 		with_all = false;
 		CHECK_OK(read_segment(ctx, content, with_all, false, is_number, NULL));
 		if (is_number_token(token->content)) {
-			token->type = NUMBER;
+			token->type = NUMBER_TOKEN;
 		} else {
 			token->type = BAD_TOKEN;
 		}
@@ -226,11 +226,11 @@ next_token(struct file_context* ctx, struct token* token)
 		                      true,
 		                      any_but_eof_and_blank,
 		                      NULL));
-		token->type = SYMBOL;
+		token->type = SYMBOL_TOKEN;
 	} else if (is_blank(ch)) {
 		skip_blanks(ctx);
 		CHECK_OK(string_pop(&token->content, NULL));
-		token->type = BLANK;
+		token->type = BLANK_TOKEN;
 	} else {
 		token->type = switch_single_char_token(ch);
 	}

@@ -1,22 +1,23 @@
 #ifndef ZLISP_TYPED_POINTER_H
 #define ZLISP_TYPED_POINTER_H
 
-#include "status.h"
 #include "logger.h"
+#include "status.h"
 #include <stdint.h>
 #include <stdlib.h>
-
-struct symbol;
 
 #define NIL_TYPE 0
 
 enum types {
-	STRLITERAL,
-	FLOATLITERAL,
-	INTLITERAL,
+	STR,
+	FLOATL,
+	INT,
 	SYMBOLTYPE,
 	READERCHAR,
+	LAMBDA,
 	LIST,
+	HASHTABLE,
+	VECTOR,
 	CUSTOM,
 	NIL,
 };
@@ -96,7 +97,7 @@ pointer_set(typed_pointer* p, void* s, enum types type)
 		}                                                                      \
 	}
 
-INITIALIZE_POINTER(float, double, FLOATLITERAL);
-INITIALIZE_POINTER(int, int64_t, INTLITERAL);
+INITIALIZE_POINTER(float, double, FLOATL);
+INITIALIZE_POINTER(int, int64_t, INT);
 
 #endif  // ZLISP_TYPED_POINTER_H

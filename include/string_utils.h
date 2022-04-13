@@ -33,8 +33,8 @@ typedef struct string {
 	char*  data;
 } string;
 
-INITIALIZE_POINTER(string, struct string, STRLITERAL);
-INITIALIZE_POINTER(macrochar, struct string, STRLITERAL);
+INITIALIZE_POINTER(string, struct string, STR);
+INITIALIZE_POINTER(macrochar, struct string, STR);
 
 static inline string
 make_string()

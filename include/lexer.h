@@ -7,7 +7,7 @@
 
 #include "context.h"
 #include "linear_queue.h"
-#include "string_utils.h"
+#include "string_utils.h" -
 
 enum token_type {
 	BAD_TOKEN,  // mal-formed segment
@@ -18,11 +18,12 @@ enum token_type {
 	COLON,      // :
 	SEMICOLON,  // ;
 
-	SYMBOL,     // symbol
-	STRING,     // "something like that"
-	NUMBER,     // 123.4 or 1234 or 123e3
-	MACROCHAR,  // `, ', # or other characters used for macro
-	BLANK,      // all blanks catenate to one cell
+	SYMBOL_TOKEN,     // symbol
+	STRING_LIT_TOKEN,     // "something like that"
+	NUMBER_TOKEN,     // 123.4 or 1234 or 123e3``
+	MACROCHAR_TOKEN,  // `, ', # or other characters used for macro
+	BLANK_TOKEN,      // all blanks are catenated to one cell
+	OPERATOR_TOKEN,
 };
 
 struct token {

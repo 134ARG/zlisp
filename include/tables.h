@@ -6,9 +6,9 @@
 #include "uthash/uthash.h"
 
 struct table_entry {
-	struct symbol _symbol;
-	char*         _name;
-	size_t        _id;
+	struct symbol symbol;
+	char*         name;
+	size_t        id;
 
 	UT_hash_handle hh_id;
 	UT_hash_handle hh_name;
@@ -32,5 +32,7 @@ enum status symbol_table_id_get(struct symbol_table table,
 size_t symbol_table_add(struct symbol_table* table, struct symbol new);
 
 void clean_symbol_table(struct symbol_table* table);
+
+struct symbol_table* new_table();
 
 #endif  // ZLISP_TABLE_H
