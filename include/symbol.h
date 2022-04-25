@@ -24,8 +24,8 @@ struct symbol {
 
 	enum symbol_type type;
 
-	struct list*   plist;
-	struct list*   bind_list;
+	// struct list*   plist;
+	// struct list*   bind_list;
 	typed_pointer* value;
 };
 
