@@ -75,7 +75,7 @@ pointer_set(typed_pointer* p, void* s, enum types type)
 			*s = (T*)p.value;                                                  \
 			return OK;                                                         \
 		} else {                                                               \
-			LOG_ERROR("to: Invalid type: expect %d, get %d",                   \
+			LOG_ERROR("to: Invalid type: expect type %d, get type %d",         \
 			          SYMBOLTYPE,                                              \
 			          p.type);                                                 \
 			*s = NULL;                                                         \
