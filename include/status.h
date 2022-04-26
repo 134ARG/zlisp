@@ -17,6 +17,7 @@ enum status {
 	ERR_NULL_PTR,
 	ERR_TYPE,
 	ERR_LEXER,
+	ERR_INDEX_OUT_OF_BOUND,
 };
 
 #endif  // ZLISP_STATUS_H
