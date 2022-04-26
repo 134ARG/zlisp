@@ -7,6 +7,7 @@ add_executable(
   zlisp
   main.c
   src/lexer.c
+  src/reader.c
   tests/unit_test.c
   src/tables.c
 )
