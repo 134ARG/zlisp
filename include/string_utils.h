@@ -15,6 +15,8 @@
 
 #define DEFAULT_CAPACITY 5
 
+#define NPOS ((size_t)-1)
+
 #define STRING_ITER(string_name, char_ptr)                                     \
 	for (char* char_ptr = (string_name).data;                                  \
 	     char_ptr - (string_name).data < (string_name).size;                   \
@@ -210,6 +212,17 @@ static inline int
 string_compare_cstr(const string s1, const char* s2)
 {
 	return strcmp(s1.data, s2);
+}
+
+static inline size_t
+string_find_char(const string s1, const char ch, size_t index) {
+	char* iter;
+	STRING_ITER_FROM(s1, iter, index) {
+		if (*iter == ch) {
+			return iter - s1.data;
+		}
+	}
+	return NPOS;
 }
 
 #endif  // ZLISP_STRING_UTILS_H

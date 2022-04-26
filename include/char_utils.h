@@ -5,15 +5,28 @@
 #ifndef ZLISP_CHAR_UTILS_H
 #define ZLISP_CHAR_UTILS_H
 
+#include "status.h"
+#include "string_utils.h"
+#include "vector.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+
+INITIALIZE_VECTOR(string_vector, struct string)
+
+struct readtable {
+	struct string_vector synatx_types;
+	struct string_vector constituent_traits;
+};
 
 static int
 is_lparen(int ch)
 {
 	return ch == '(';
 }
+
+const size_t syntax_type_size = 6;
+const size_t trait_size       = 14;
 
 enum syntax_type {
 	CONSTITUENT,
@@ -24,7 +37,7 @@ enum syntax_type {
 	MULTIPLE_ESCAPE,
 };
 
-enum constituent_traits {
+enum constituent_trait {
 	INVALID,
 	ALPHABETIC,
 	ALPHADIGIT,
@@ -40,6 +53,10 @@ enum constituent_traits {
 	LONG_EXPONENT_MARKER,
 	SHORT_EXPONENT_MARKER,
 };
+
+enum status load_readtable(struct readtable* rt);
+int check_syntax_type(struct readtable* rt, enum syntax_type type, char x);
+int check_trait_type(struct readtable* rt, enum constituent_trait type, char x);
 
 static int
 is_slash(int ch)
