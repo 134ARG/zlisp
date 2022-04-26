@@ -16,7 +16,7 @@
                                                                                \
 	static inline struct QUEUE make_##QUEUE() {                                \
 		return (struct QUEUE){                                                 \
-		    .data     = malloc(CAPACITY_STEP * sizeof(void*)),                 \
+		    .data     = malloc(CAPACITY_STEP * sizeof(T)),                     \
 		    .start    = 0,                                                     \
 		    .end      = 0,                                                     \
 		    .capacity = CAPACITY_STEP,                                         \
