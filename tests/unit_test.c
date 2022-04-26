@@ -3,12 +3,15 @@
 //
 
 #include "unit_test.h"
-#include "stream.h"
+#include "char_utils.h"
 #include "lexer.h"
 #include "linear_queue.h"
+#include "stream.h"
 // #include "list_abandon.h"
+#include "context.h"
 #include "logger.h"
 #include "mem_utils.h"
+#include "reader.h"
 #include "status.h"
 #include "string_utils.h"
 #include "symbol.h"
@@ -16,6 +19,40 @@
 #include <stdio.h>
 
 INITIALIZE_QUEUE(int_queue, int);
+
+void
+test_reader()
+{
+	fprintf(stderr, "start testing reader()\n");
+
+	struct file_stream s = make_file_stream("./test.ll", "r");
+	if (!s.file) {
+		printf("file reading failed\n");
+		return;
+	}
+
+	struct readtable rt = (struct readtable){
+	    .synatx_types       = make_string_vector(),
+	    .constituent_traits = make_string_vector(),
+	};
+
+	struct context ctx = (struct context){
+	    .parent_context = NULL,
+	    .child_context  = NULL,
+	    .rt             = &rt,
+	};
+
+	load_readtable(&rt);
+
+	struct symbol* placeholder;
+
+	while (reader(&s, &placeholder, &ctx) == OK)
+		;
+	clean_string_vector(&rt.constituent_traits);
+	clean_string_vector(&rt.synatx_types);
+	fprintf(stderr, "testing finished.\n\n");
+	return;
+}
 
 void
 test_lexer()

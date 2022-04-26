@@ -8,6 +8,7 @@ add_executable(
   main.c
   src/lexer.c
   src/reader.c
+  src/char_utils.c
   tests/unit_test.c
   src/tables.c
 )

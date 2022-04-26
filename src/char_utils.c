@@ -3,7 +3,7 @@
 static enum status
 load_syntax_type(struct string_vector* v)
 {
-	CHECK_OK(extend_string_vector(v, syntax_type_size));
+	CHECK_OK(resize_string_vector(v, syntax_type_size));
 
 	CHECK_OK(string_vector_set(v,
 	                           CONSTITUENT,
@@ -28,7 +28,7 @@ load_syntax_type(struct string_vector* v)
 static enum status
 load_trait(struct string_vector* v)
 {
-	CHECK_OK(extend_string_vector(v, trait_size));
+	CHECK_OK(resize_string_vector(v, trait_size));
 
 	CHECK_OK(
 	    string_vector_set(v, INVALID, make_string_from_cstr("\b\t\n\v\f\r ")));
@@ -83,9 +83,9 @@ load_readtable(struct readtable* rt)
 int
 check_syntax_type(struct readtable* rt, enum syntax_type type, char x)
 {
-	struct string* ptr;
-	string_vector_get(&rt->synatx_types, type, ptr);
-	if (ptr && string_find_char(*ptr, x, 0) != NPOS) {
+	struct string ptr;
+	string_vector_get(&rt->synatx_types, type, &ptr);
+	if (string_find_char(ptr, x, 0) != NPOS) {
 		return 1;
 	} else {
 		return 0;

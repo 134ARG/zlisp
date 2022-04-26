@@ -25,8 +25,8 @@ is_lparen(int ch)
 	return ch == '(';
 }
 
-const size_t syntax_type_size = 6;
-const size_t trait_size       = 14;
+const static size_t syntax_type_size = 6;
+const static size_t trait_size       = 14;
 
 enum syntax_type {
 	CONSTITUENT,

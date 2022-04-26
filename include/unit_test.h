@@ -22,5 +22,6 @@ void test_list();
 void test_tables();
 void test_next_token();
 void test_queue();
+void test_reader();
 
 #endif  // ZLISP_UNIT_TEST_H
