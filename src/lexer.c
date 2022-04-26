@@ -5,7 +5,7 @@
 #include "lexer.h"
 #include "char_utils.h"
 #include "check.h"
-#include "context.h"
+#include "stream.h"
 #include "list.h"
 #include "logger.h"
 #include "status.h"
@@ -33,22 +33,22 @@ clean_token(struct token* token)
 }
 
 enum status
-skip_blanks(struct file_context* ctx)
+skip_blanks(struct file_stream* ctx)
 {
 	int ch = 0;
-	while (is_blank(ch = file_context_getchar(ctx)))
+	while (is_blank(ch = file_stream_getchar(ctx)))
 		;
 	if (ch != EOF) {
-		CHECK_OK(file_context_rollback(ctx, -1));
+		CHECK_OK(file_stream_rollback(ctx, -1));
 	}
 	return OK;
 }
 
 enum status
-skip_to_blank(struct file_context* ctx)
+skip_to_blank(struct file_stream* ctx)
 {
 	int ch = 0;
-	while (!is_blank_or_eof(ch = file_context_getchar(ctx)))
+	while (!is_blank_or_eof(ch = file_stream_getchar(ctx)))
 		;
 	return OK;
 }
@@ -95,7 +95,7 @@ is_number_token(const string segment)
  * 3. symbol string
  */
 enum status
-next_unit(struct file_context* ctx, string* segment)
+next_unit(struct file_stream* ctx, string* segment)
 {
 	if (!segment) {
 		return ERR_NULL_PTR;
@@ -106,7 +106,7 @@ next_unit(struct file_context* ctx, string* segment)
 	int ch = 0;
 
 	// ch = skip_blanks(ctx);
-	ch = file_context_getchar(ctx);
+	ch = file_stream_getchar(ctx);
 	if (ch == EOF) {
 		return INFO_END_OF_FILE;
 	}
@@ -116,15 +116,15 @@ next_unit(struct file_context* ctx, string* segment)
 		return OK;
 	}
 
-	while (is_symbol(ch = file_context_getchar(ctx))) {
+	while (is_symbol(ch = file_stream_getchar(ctx))) {
 		if (ch == '\\') {
-			ch = file_context_getchar(ctx);
+			ch = file_stream_getchar(ctx);
 		}
 		string_push(segment, (char)ch);
 	}
 
 	if (ch != EOF) {
-		CHECK_OK(file_context_rollback(ctx, -1));
+		CHECK_OK(file_stream_rollback(ctx, -1));
 	}
 	return OK;
 }
@@ -148,7 +148,7 @@ switch_single_char_token(int ch)
 }
 
 enum status
-read_segment(struct file_context* ctx,
+read_segment(struct file_stream* ctx,
              string*              segment,
              int                  with_all,
              int                  with_escape,
@@ -162,20 +162,20 @@ read_segment(struct file_context* ctx,
 		read_predicate = is_symbol;
 	}
 
-	while ((read_predicate(ch = file_context_getchar(ctx)) || with_all) &&
+	while ((with_all || read_predicate(ch = file_stream_getchar(ctx))) &&
 	       !terminate_flag) {
 		if (terminate_predicate && terminate_predicate(ch)) {
 			terminate_flag = true;
 		}
 		if (with_escape && is_slash(ch)) {
-			ch = file_context_getchar(ctx);
+			ch = file_stream_getchar(ctx);
 		}
 		// TODO: utf characters support
 		CHECK_OK(string_push(segment, (char)ch));
 	}
 
 	if (ch != EOF) {
-		CHECK_OK(file_context_rollback(ctx, -1));
+		CHECK_OK(file_stream_rollback(ctx, -1));
 	}
 
 	// skip_to_blank(ctx);
@@ -184,7 +184,7 @@ read_segment(struct file_context* ctx,
 }
 
 enum status
-next_token(struct file_context* ctx, struct token* token)
+next_token(struct file_stream* ctx, struct token* token)
 {
 	if (!token) {
 		return ERR_NULL_PTR;
@@ -198,28 +198,28 @@ next_token(struct file_context* ctx, struct token* token)
 	int ch = 0;
 
 	// CHECK_OK(skip_blanks(ctx));
-	ch = file_context_getchar(ctx);
+	ch = file_stream_getchar(ctx);
 	if (ch == EOF) {
 		return INFO_END_OF_FILE;
 	}
 
-	string_push(content, ch);
+	// string_push(content, ch);
 
 	if (is_doublequote(ch)) {
-		with_all = true;
+		string_push(content, ch);
 		CHECK_OK(
-		    read_segment(ctx, content, with_all, true, NULL, is_doublequote));
+		    read_segment(ctx, content, true, true, NULL, is_doublequote));
 		token->type = STRING_LIT_TOKEN;
 	} else if (is_number_start(ch)) {
-		with_all = false;
-		CHECK_OK(read_segment(ctx, content, with_all, false, is_number, NULL));
+		string_push(content, ch);
+		CHECK_OK(read_segment(ctx, content, false, false, is_number, NULL));
 		if (is_number_token(token->content)) {
 			token->type = NUMBER_TOKEN;
 		} else {
 			token->type = BAD_TOKEN;
 		}
 	} else if (is_symbol(ch)) {
-		with_all = false;
+		string_push(content, ch);
 		CHECK_OK(read_segment(ctx,
 		                      content,
 		                      with_all,
@@ -229,7 +229,6 @@ next_token(struct file_context* ctx, struct token* token)
 		token->type = SYMBOL_TOKEN;
 	} else if (is_blank(ch)) {
 		skip_blanks(ctx);
-		CHECK_OK(string_pop(&token->content, NULL));
 		token->type = BLANK_TOKEN;
 	} else {
 		token->type = switch_single_char_token(ch);
@@ -239,7 +238,7 @@ next_token(struct file_context* ctx, struct token* token)
 }
 
 enum status
-read_sexpression(struct file_context* ctx, struct list* sexpr)
+read_sexpression(struct file_stream* ctx, struct list* sexpr)
 {
 	struct token tok = make_token();
 	CHECK_OK(next_token(ctx, &tok));

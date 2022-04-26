@@ -5,7 +5,7 @@
 #ifndef ZLISP_LEXER_H
 #define ZLISP_LEXER_H
 
-#include "context.h"
+#include "stream.h"
 #include "linear_queue.h"
 #include "string_utils.h"
 
@@ -37,8 +37,8 @@ struct token make_token();
 
 enum status clean_token(struct token* token);
 
-enum status next_unit(struct file_context* ctx, string* segment);
-enum status next_segment(struct file_context* ctx, string* segment);
-enum status next_token(struct file_context* ctx, struct token* token);
+enum status next_unit(struct file_stream* ctx, string* segment);
+enum status next_segment(struct file_stream* ctx, string* segment);
+enum status next_token(struct file_stream* ctx, struct token* token);
 
 #endif  // ZLISP_LEXER_H

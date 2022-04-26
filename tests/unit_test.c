@@ -3,7 +3,7 @@
 //
 
 #include "unit_test.h"
-#include "context.h"
+#include "stream.h"
 #include "lexer.h"
 #include "linear_queue.h"
 // #include "list_abandon.h"
@@ -23,8 +23,8 @@ test_lexer()
 	// next_unit
 	fprintf(stderr, "start testing next_unit()\n");
 
-	CLEANUP(clean_file_context)
-	struct file_context test_file = make_file_context("./test.ll", "r");
+	CLEANUP(clean_file_stream)
+	struct file_stream test_file = make_file_stream("./test.ll", "r");
 
 	if (!test_file.file) {
 		printf("file reading failed\n");
@@ -34,12 +34,12 @@ test_lexer()
 	while (next_unit(&test_file, &segment) == OK) {
 		fprintf(stderr, "%s | ", segment.data);
 	}
-	clean_file_context(&test_file);
+	clean_file_stream(&test_file);
 	fprintf(stderr, "\ntesting finished.\n\n");
 
 	// next token
 	fprintf(stderr, "start testing next_token()\n");
-	test_file = make_file_context("./test.ll", "r");
+	test_file = make_file_stream("./test.ll", "r");
 	if (!test_file.file) {
 		LOG_ERROR("file reading failed\n");
 		return;
@@ -48,7 +48,7 @@ test_lexer()
 	while (next_token(&test_file, &token) != INFO_END_OF_FILE) {
 		fprintf(stderr, "%s - %d | ", token.content.data, token.type);
 	}
-	clean_file_context(&test_file);
+	clean_file_stream(&test_file);
 	fprintf(stderr, "\ntesting finished.\n\n");
 	return;
 }
