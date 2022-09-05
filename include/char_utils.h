@@ -12,8 +12,6 @@
 #include <stdio.h>
 #include <string.h>
 
-INITIALIZE_VECTOR(string_vector, struct string)
-
 struct readtable {
 	struct string_vector synatx_types;
 	struct string_vector constituent_traits;

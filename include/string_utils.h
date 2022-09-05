@@ -8,6 +8,7 @@
 #include "check.h"
 #include "logger.h"
 #include "status.h"
+#include "vector.h"
 #include "typed_pointer.h"
 #include <memory.h>
 #include <stdlib.h>
@@ -34,6 +35,8 @@ typedef struct string {
 	size_t capacity;
 	char*  data;
 } string;
+
+INITIALIZE_VECTOR(string_vector, struct string);
 
 INITIALIZE_POINTER(string, struct string, STR);
 INITIALIZE_POINTER(macrochar, struct string, STR);

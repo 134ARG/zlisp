@@ -1,4 +1,5 @@
 #include "char_utils.h"
+#include "string_utils.h"
 
 static enum status
 load_syntax_type(struct string_vector* v)
