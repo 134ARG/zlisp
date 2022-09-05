@@ -180,3 +180,31 @@ test_queue()
 
 	fprintf(stderr, "testing finished.\n\n");
 }
+
+void
+test_logger()
+{
+	// no log output
+	set_log_level(3);
+	LOG_ERROR("test error %d", 1);
+	LOG_INFO("test info %d", 1);
+	LOG_DEBUG("test debug %d", 1);
+
+	// only errors
+	set_log_level(2);
+	LOG_ERROR("test error %d", 2);
+	LOG_INFO("test info %d", 2);
+	LOG_DEBUG("test debug %d", 2);
+
+	// errors and info
+	set_log_level(1);
+	LOG_ERROR("test error %d", 3);
+	LOG_INFO("test info %d", 3);
+	LOG_DEBUG("test debug %d", 3);
+
+	// all
+	set_log_level(0);
+	LOG_ERROR("test error %d", 4);
+	LOG_INFO("test info %d", 4);
+	LOG_DEBUG("test debug %d", 4);
+}

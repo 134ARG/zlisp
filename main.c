@@ -10,5 +10,6 @@ main()
 	test_tables();
 	test_queue();
 	test_reader();
+	test_logger();
 	return 0;
 }

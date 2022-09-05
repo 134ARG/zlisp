@@ -11,6 +11,7 @@ add_executable(
   src/char_utils.c
   tests/unit_test.c
   src/tables.c
+  src/logger.c
 )
 
 include_directories(include third_party)

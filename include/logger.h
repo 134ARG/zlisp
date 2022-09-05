@@ -8,22 +8,16 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-static void logger(const char* file, int line, const char* fmt, ...)
-    __attribute__((format(printf, 3, 4)));
+void set_log_level(unsigned int level);
 
-#define LOG_ERROR(fmt, ...) logger(__FILE__, __LINE__, fmt, ##__VA_ARGS__)
+void
+logger(unsigned int level, const char* file, int line, const char* fmt, ...)
+    __attribute__((format(printf, 4, 5)));
 
-static void
-logger(const char* file, int line, const char* fmt, ...)
-{
-	va_list args;
-	va_start(args, fmt);
+#define LOG_ERROR(fmt, ...) logger(2, __FILE__, __LINE__, fmt, ##__VA_ARGS__)
 
-	fprintf(stderr, "%s: %d: ", file, line);
-	vfprintf(stderr, fmt, args);
-	fprintf(stderr, "\n");
+#define LOG_INFO(fmt, ...) logger(1, __FILE__, __LINE__, fmt, ##__VA_ARGS__)
 
-	va_end(args);
-}
+#define LOG_DEBUG(fmt, ...) logger(0, __FILE__, __LINE__, fmt, ##__VA_ARGS__)
 
 #endif  // ZLISP_LOGGER_H
