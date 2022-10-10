@@ -7,7 +7,7 @@ static const char* log_levels[3] = {"[DEBUG]", "[INFO]", "[ERROR]"};
 static unsigned int current_log_level = 1;
 
 void
-set_log_level(unsigned int level)
+set_log_level(enum log_level level)
 {
 	current_log_level = level;
 }
@@ -27,7 +27,7 @@ logger(unsigned int level, const char* file, int line, const char* fmt, ...)
 	va_list args;
 	va_start(args, fmt);
 
-	fprintf(stderr, "%s\t%s:%d: ", log_levels[level], file, line);
+	fprintf(stderr, "%s: %s:%d: ", log_levels[level], file, line);
 	vfprintf(stderr, fmt, args);
 	fprintf(stderr, "\n");
 
